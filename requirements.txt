@@ -1,0 +1,10 @@
+orjson           # read and write json
+pyside6          # gui framework
+nuitka           # compiler 
+ordered-set      # required by nuitka
+jinja2           # jinja2 generator
+tendo            # singleton
+pillow           # image editing
+pyprof2calltree  # prepare profile file for visualizing
+unidecode        # utils for handling codecs
+BlurWindow       # blur background of a window

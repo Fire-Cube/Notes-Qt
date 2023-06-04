@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>411</width>
+    <height>101</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* QPushButton */
+QPushButton {
+	border: 1px solid gainsboro;
+	border-radius: 3px;
+}
+
+QPushButton:focus, QPushButton:hover {
+	border-color: rgb(198, 198, 198);
+}
+
+/* QLineEdit */
+QLineEdit {
+	border: 1px solid gainsboro;
+	border-radius: 6px;
+}
+
+QLineEdit:focus, QLineEdit:hover {
+	border-color: rgb(198, 198, 198);
+}
+
+/* QDialog */
+QDialog {
+	background-color: white;
+}</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>301</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Please enter a name for the new tag</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="tag_name_entry">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>381</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="submit_button">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>75</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>add</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

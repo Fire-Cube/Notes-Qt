@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="ui">
+    <file>accept.png</file>
+    <file>acceptHover.png</file>
+  </qresource>
+</RCC>

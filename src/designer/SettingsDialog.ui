@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>572</width>
+    <height>749</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* QDialog */
+QDialog {
+	background-color: rgb(253, 253, 253);
+}
+
+/* QPushButton */
+QPushButton {
+	border: 1px solid gainsboro;
+	border-radius: 3px;
+}
+
+QPushButton:hover {
+	border-color: rgb(198, 198, 198);
+}
+
+/* QComboBox */
+QComboBox {
+	background-color: white;
+	border: 1px solid gainsboro;
+    border-radius: 3px;
+	selection-color: black;
+}
+
+QListView{
+	border: 1px solid rgb(198, 198, 198);
+    border-radius: 3px;
+}
+
+QComboBox:hover {
+	border-color: rgb(198, 198, 198);
+}
+
+QComboBox::drop-down {
+	background-color: transparent;
+}
+
+QComboBox::down-arrow {
+	image: url(:/theme/ComboBox.png);
+}
+
+QAbstractItemView::corner {
+	background-color: transparent;
+}
+
+QComboBox::drop-down {
+    border-color: transparent;
+}
+
+/* QCheckBox */
+QCheckBox::indicator {
+	border: 1px solid gainsboro;
+	border-radius: 3px;
+    width: 22px;
+    height: 22px;
+}
+
+QCheckBox::indicator:hover {
+	border-color: rgb(198, 198, 198);
+}
+
+QCheckBox::indicator:checked {
+	image: url(:/ui/CheckBox.png);
+}
+
+QCheckBox::indicator:checked:pressed {
+	image: url(:ui/CheckBoxPressed.png);
+}
+
+QCheckBox::indicator:unchecked:pressed {
+	image: url(:/ui/CheckBoxPressed.png);
+}
+
+QCheckBox {
+	background-color: rgba(255, 255, 255, 150);
+	padding: 5px;
+}</string>
+  </property>
+  <widget class="QComboBox" name="language_combobox">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>50</y>
+     <width>69</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>English</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>German</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Language</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>129</y>
+     <width>471</width>
+     <height>391</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetDefaultConstraint</enum>
+    </property>
+    <property name="spacing">
+     <number>10</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QPushButton" name="background1_button">
+      <property name="maximumSize">
+       <size>
+        <width>162</width>
+        <height>108</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/1.png</normaloff>:/backgrounds/1.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="background5_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/5.png</normaloff>:/backgrounds/5.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="background2_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/2.png</normaloff>:/backgrounds/2.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="background3_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/3.png</normaloff>:/backgrounds/3.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="background4_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/4.png</normaloff>:/backgrounds/4.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="background6_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/6.png</normaloff>:/backgrounds/6.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="background7_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/7.png</normaloff>:/backgrounds/7.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="background8_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/8.png</normaloff>:/backgrounds/8.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QPushButton" name="background9_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/settings_dialog_resources.qrc">
+        <normaloff>:/backgrounds/9.png</normaloff>:/backgrounds/9.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>131</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>91</y>
+     <width>121</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Background Images</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>560</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Background Color</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="apply_image_button">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>520</y>
+     <width>75</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Apply</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="apply_color_button">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>650</y>
+     <width>75</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Apply</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="acryl_checkbox">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>598</y>
+     <width>76</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Acryl</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="color_button">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>590</y>
+     <width>45</width>
+     <height>45</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 22px; background-color: white;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>107</x>
+     <y>577</y>
+     <width>37</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: gray; border: solid; border-radius: 2px; border-color: gray; border-width: 1px; margin: 5px;</string>
+   </property>
+   <property name="text">
+    <string>Beta</string>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources/settings_dialog_resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

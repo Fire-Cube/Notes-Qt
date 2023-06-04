@@ -1,0 +1,118 @@
+"""
+This file is generated
+Do not edit this directly
+"""
+
+from copy import deepcopy
+
+import orjson
+
+from storage.paths import ENTRIES_FILE_PATH
+
+class InvalidIDError(BaseException):
+    pass
+
+
+class Entries(list):
+    on_save = None
+    
+    def save(self) -> None:
+        with open(ENTRIES_FILE_PATH, "wb") as data_file:
+            data_file.write(orjson.dumps(list(self)))
+
+    {% for method_name, data_type, path in entries_specification -%}
+    def get_{{ method_name }}(self, iid: str) -> {{ get_function_type_hint(data_type) }}:
+        if not isinstance(iid, str):
+            raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
+
+        index = None
+        for i, entry in enumerate(self):
+            if entry["id"] == iid:
+                index = i
+
+        if index is None:
+            raise InvalidIDError(f"The ID: {iid} doesn't exists")
+
+        return deepcopy(self[index]{{ get_dict_path(path) }})
+
+
+    def set_{{ method_name }}(self, iid: str, data: {{ get_function_type_hint(data_type) }}) -> None:
+        # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        if not isinstance(iid, str):
+            raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
+
+        if isinstance(data, {{ get_isinstance_type_check_arg(data_type) }}):
+            index = None
+            for i, entry in enumerate(self):
+                if entry["id"] == iid:
+                    index = i
+
+            if index is None:
+                raise InvalidIDError(f"The ID: {iid} doesn't exists")
+
+            self[index]{{ get_dict_path(path) }} = data
+
+        else:
+            raise TypeError(f"entries.{{ path }}: Type of value '{data!r}' {type(data)} is not in specification")
+
+        self.save()
+        {% if method_name not in ["creation_time", "modification_time"] %}
+        self.on_save()
+        {% endif %}
+    {% endfor %}
+
+    def delete_entry(self, iid: str) -> None:
+        if not isinstance(iid, str):
+            raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
+
+        index = None
+        for i, entry in enumerate(self):
+            if entry["id"] == iid:
+                index = i
+
+        if index is None:
+            raise f"{index} is not in data (lenght: {len(self)})"
+
+        self.pop(index)
+
+        self.save()
+
+
+    def delete_entry_recursive(self, iid: str) -> None:
+        self.delete_entry(iid)
+        is_clean = False
+        while not is_clean:
+            is_clean = True
+            for entry in self:
+                if not self.id_exists(entry["parent"]) and not entry["parent"] == "0":
+                    is_clean = False
+                    self.delete_entry(entry["id"])
+                    print(entry["id"])
+
+
+    def id_exists(self, iid: str) -> bool:
+        index = None
+        for i, entry in enumerate(self):
+            if entry["id"] == iid:
+                index = i
+
+        return index is not None
+
+
+def load_entries() -> Entries:
+    with open(ENTRIES_FILE_PATH, encoding="utf-8") as data_file:
+        data = Entries()
+        entries_by_parent = {}
+        for entry in orjson.loads(data_file.read()):
+            if entry["parent"] not in entries_by_parent:
+                entries_by_parent[entry["parent"]] = [entry]
+
+            else:
+                entries_by_parent[entry["parent"]].append(entry)
+
+        entries_by_parent = dict(sorted(entries_by_parent.items()))
+        for key in entries_by_parent:
+            entries_by_parent[key].sort(key=lambda x: x["position"])
+            data.extend(entries_by_parent[key])
+            
+        return data
