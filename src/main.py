@@ -34,10 +34,10 @@ from re import fullmatch
 
 from typing import Callable
 
-from PySide6.QtCore import SIGNAL, QEvent, QMargins, QModelIndex, QObject, QPoint, QPointF, QRect, Qt, QTranslator  # NOQA
-from PySide6.QtGui import QBrush, QColor, QFont, QFontMetrics, QImage, QMouseEvent, QPainter, QPainterPath, QPen, QPixmap, QPolygon, QStandardItem, QStandardItemModel, QTextDocument, QTransform  # NOQA
+from PySide6.QtCore import SIGNAL, QEvent, QMargins, QModelIndex, QObject, QPoint, QPointF, QRect, Qt, QTranslator
+from PySide6.QtGui import QBrush, QColor, QFont, QFontMetrics, QImage, QMouseEvent, QPainter, QPainterPath, QPen, QPixmap, QPolygon, QStandardItem, QStandardItemModel, QTextDocument
 from PySide6.QtSvg import QSvgGenerator
-from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsItem, QGraphicsPixmapItem  # NOQA
+from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsItem, QGraphicsPixmapItem
 from tendo.singleton import SingleInstance, SingleInstanceException
 
 from BlurWindow.blurWindow import blur
@@ -45,14 +45,14 @@ from BlurWindow.blurWindow import blur
 from big_constants import EMPTY_HTML, SCROLL_AREA_STYLE_SHEET
 from random_id import IDGenerator
 from storage.helpers import delete_data, prepare_first_run
-from storage.images import Registry, get_hash_from_image, get_image, import_image  # NOQA
-from storage.paint import create_new_paint, delete_paint, load_paint, save_paint  # NOQA
-from storage.painting_nodes import EllipseNode, ImageNode, LineNode, PolygonNode, RectangleNode  # NOQA
+from storage.images import Registry, get_hash_from_image, get_image, import_image
+from storage.paint import create_new_paint, delete_paint, load_paint, save_paint
+from storage.painting_nodes import EllipseNode, ImageNode, LineNode, PolygonNode, RectangleNode
 from storage.templates import ENTRY_TEMPLATE
 from storage_generated.entries import load_entries
 from storage_generated.settings import Settings, load_settings
 
-from tools import get_actual_time
+from shared import get_actual_time
 
 from ui_generated.AskTagDialog import Ui_Dialog as UI_AskTagDialog
 from ui_generated.MainWindow import Ui_MainWindow
@@ -445,7 +445,6 @@ class MainWindow(QMainWindow):
 
 
         # Search Tab
-
         self.ui.search_scroll_area.setGeometry(
             QRect(
                 10,
@@ -494,9 +493,6 @@ class MainWindow(QMainWindow):
         self.installEventFilter(self.eventFilter)
 
         self.load_hierarchical_view()
-        # print(self.get_model_index_by_id(self.iid))
-        # self.hierarchical_view_model.setData(self.get_model_index_by_id(self.iid), True, SELECTION_ROLE)
-        # self.hierarchical_view_model.item(self.get_model_index_by_id(self.iid).).paint()
 
         self.load_entry()
         self.load_search_tab()
@@ -517,7 +513,6 @@ class MainWindow(QMainWindow):
         else:
             self.app.removeTranslator(self.translator)
 
-        # print(self.settings.get_language())
         self.ui.retranslateUi(self) # translate all widgets
 
 
@@ -532,7 +527,6 @@ class MainWindow(QMainWindow):
             
 
         else:
-            # self.ui.background_overlay.setStyleSheet("background-color: transparent")
             self.update_background_image()
 
 
@@ -855,7 +849,6 @@ class MainWindow(QMainWindow):
         path = QPainterPath(QPointF(*node.coordinates[0]))
         for point in node.coordinates[1:]:
             path.quadTo(*[QPointF(*point)] * 2)
-            # path.lineTo(QPointF(*point))
 
         self.paint_tab_actual_item = self.paint_graphicsscene.addPath(
             path,
@@ -1101,9 +1094,6 @@ class MainWindow(QMainWindow):
         # load all custom colors to dialog
         for i, color in enumerate(self.settings.get_color_chooser_custom_colors()):
             color_dialog.setCustomColor(i, QColor(color))
-
-        # color_dialog.setPalette(QPalette())
-        # get color
 
         color = button.palette().color(button.backgroundRole())
         print(color)

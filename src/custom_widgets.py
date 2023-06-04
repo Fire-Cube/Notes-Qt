@@ -1,6 +1,6 @@
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QFontDatabase
-from PySide6.QtWidgets import QComboBox, QHBoxLayout, QLabel, QPushButton
+from PySide6.QtWidgets import QComboBox
 
 
 class FontComboBox(QComboBox):

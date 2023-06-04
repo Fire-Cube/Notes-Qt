@@ -1,4 +1,4 @@
-from tools import get_actual_time
+from shared import get_actual_time
 
 
 ENTRY_TEMPLATE = {
