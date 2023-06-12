@@ -42,7 +42,7 @@ from tendo.singleton import SingleInstance, SingleInstanceException
 
 from BlurWindow.blurWindow import blur
 
-from big_constants import EMPTY_HTML, SCROLL_AREA_STYLE_SHEET
+from constants import *
 from random_id import IDGenerator
 from storage.helpers import delete_data, prepare_first_run
 from storage.images import Registry, get_hash_from_image, get_image, import_image
@@ -57,21 +57,6 @@ from shared import get_actual_time
 from ui_generated.AskTagDialog import Ui_Dialog as UI_AskTagDialog
 from ui_generated.MainWindow import Ui_MainWindow
 from ui_generated.SettingsDialog import Ui_Dialog as UI_SettingsDialog
-
-ID_ROLE = 257
-SELECTION_ROLE = 258
-
-DISPLAY_ROLE = 0
-EDIT_ROLE = 2
-BACKGROUND_ROLE = 8
-
-KEY_PRESS_EVENT = 6
-KEY_RELEASE_EVENT = 7
-
-UP_KEY = 16777235
-DOWN_KEY = 16777237
-SHIFT_KEY = 16777248
-RETURN_KEY = 16777220
 
 SUPRESSED_ERRORS = [
     "Internal C++ object (StandardItem) already deleted.",
