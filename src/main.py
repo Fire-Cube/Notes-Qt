@@ -58,18 +58,7 @@ from ui_generated.AskTagDialog import Ui_Dialog as UI_AskTagDialog
 from ui_generated.MainWindow import Ui_MainWindow
 from ui_generated.SettingsDialog import Ui_Dialog as UI_SettingsDialog
 
-SUPRESSED_ERRORS = [
-    "Internal C++ object (StandardItem) already deleted.",
-]
-
 ID_GENERATOR = IDGenerator()
-
-def supress_error(error: Exception) -> None:
-    if str(error) in SUPRESSED_ERRORS:
-        print(f"supressed error {SUPRESSED_ERRORS.index(str(error)) + 1}")
-
-    else:
-        raise error
 
 
 class EventFilter(QObject):
@@ -138,11 +127,7 @@ class StandardItem(QStandardItem):
         if role == EDIT_ROLE: # if item directly edited by user on UI
             self.update_text_function(QStandardItem.data(self, ID_ROLE), value)
 
-        try:
-            QStandardItem.setData(self, value, role) # do what normally happens
-
-        except RuntimeError as error:
-            supress_error(error)
+        QStandardItem.setData(self, value, role) # do what normally happens
 
 
 class DraggablePixmap(QGraphicsPixmapItem):
