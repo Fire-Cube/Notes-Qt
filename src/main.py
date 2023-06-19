@@ -1214,7 +1214,6 @@ class MainWindow(QMainWindow):
     def paint_tab_finish_polygon(self) -> None:
         self.paint_graphicsscene.removeItem(self.paint_tab_actual_item)
         self.paint_data[self.paint_tab_actual_object_id] = PolygonNode(
-            self.get_next_free_id(self.get_used_paint_ids()),
             self.paint_data[self.paint_tab_actual_object_id].coordinates,
             self.entries.get_shape_outline_size(self.iid),
             self.entries.get_shape_outline_color(self.iid),
