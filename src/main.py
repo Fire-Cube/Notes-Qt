@@ -1034,7 +1034,7 @@ class MainWindow(QMainWindow):
                 QImage(
                     raw,
                     *size,
-                    QImage.Format_ARGB32
+                    QImage.Format_RGBA8888
                 ).scaled(*node.size, Qt.KeepAspectRatio)
             )
         )
