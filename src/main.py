@@ -27,7 +27,7 @@ os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
 if "profile" in sys.argv:
     import cProfile
 
-from copy import deepcopy
+from copy import copy, deepcopy
 from functools import partial
 from pathlib import Path
 from re import fullmatch
@@ -37,7 +37,7 @@ from typing import Callable
 from PySide6.QtCore import SIGNAL, QEvent, QMargins, QModelIndex, QObject, QPoint, QPointF, QRect, Qt, QTranslator
 from PySide6.QtGui import QBrush, QColor, QFont, QFontMetrics, QImage, QMouseEvent, QPainter, QPainterPath, QPen, QPixmap, QPolygon, QStandardItem, QStandardItemModel, QTextDocument
 from PySide6.QtSvg import QSvgGenerator
-from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsItem, QGraphicsPixmapItem
+from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsPixmapItem
 from tendo.singleton import SingleInstance, SingleInstanceException
 
 from BlurWindow.blurWindow import blur
@@ -128,53 +128,6 @@ class StandardItem(QStandardItem):
             self.update_text_function(QStandardItem.data(self, ID_ROLE), value)
 
         QStandardItem.setData(self, value, role) # do what normally happens
-
-
-class DraggablePixmap(QGraphicsPixmapItem):
-    def __init__(self, pixmap, parent=None):
-        super().__init__(pixmap, parent)
-        self.setFlags(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable)
-        self.setAcceptHoverEvents(True)
-        self.offset = QPointF()
-
-    def hoverEnterEvent(self, event):
-        self.setCursor(Qt.OpenHandCursor)
-
-    def hoverLeaveEvent(self, event):
-        self.setCursor(Qt.ArrowCursor)
-
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.setCursor(Qt.ClosedHandCursor)
-            # Berechne den Abstand des Mauszeigers zur Mitte des Grafikelements
-            self.offset = event.scenePos() - self.pos()
-
-        super().mousePressEvent(event)
-
-    def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.LeftButton:
-            # Berechne die neue Position des Grafikelements
-            position = event.scenePos() - self.offset
-            self.setPos(position)
-
-        super().mouseMoveEvent(event)
-
-
-    def mouseReleaseEvent(self, event):
-        self.setCursor(Qt.OpenHandCursor)
-        super().mouseReleaseEvent(event)
-
-
-    def wheelEvent(self, event):
-        if self.isSelected():
-            # Skaliere das Element proportional zur Änderung des Mausrads
-            delta = event.delta() / 120
-            factor = 1.1 if delta > 0 else 0.9
-            old_position = self.mapToScene(self.boundingRect().center())  # Position vor Skalierung
-            self.setScale(self.scale() * factor)
-            new_position = self.mapToScene(self.boundingRect().center())  # Position nach Skalierung
-            delta_position = old_position - new_position  # Differenz zwischen den beiden Positionen
-            self.setPos(self.pos() + delta_position)  # Setze die neue Position des Elements
 
 
 class AskTagDialog(QDialog):
@@ -288,6 +241,7 @@ class MainWindow(QMainWindow):
         self.paint_data = {}
 
         self.selected_item = None
+        self.selected_item_relative_to_mouse_position = QPoint()
 
         # set all variables that will be used later
         # not required, but helps to keep things clear
@@ -732,196 +686,6 @@ class MainWindow(QMainWindow):
         self.ui.tags_combobox.addItems(tags)
 
 
-    def paint_tab_export(self) -> None:
-        if path := QFileDialog().getSaveFileName(filter="SVG (*.svg)")[0]:
-            svg_generator = QSvgGenerator()
-            svg_generator.setFileName(path)
-            svg_generator.setSize(self.paint_graphicsscene.sceneRect().size().toSize())
-
-            painter = QPainter()
-            painter.begin(svg_generator)
-            painter.setRenderHint(QPainter.Antialiasing)
-            self.paint_graphicsscene.render(painter)
-            painter.end()
-
-
-    def paint_tab_on_clear_button_clicked(self) -> None:
-        self.paint_graphicsscene.clear()
-        self.image_registry.unregister_all_from_iid(self.iid, self.paint_data)
-
-        self.paint_data = {}
-        save_paint(self.iid, self.paint_data)
-
-
-    def paint_tab_enable_paint_mode(self, button: QPushButton, mode: str) -> None:
-        self.entries.set_activated_paint_mode(self.iid, mode)
-
-        buttons = [
-            self.ui.paint_tab_enable_selector_button,
-            self.ui.paint_tab_enable_pen_button,
-            self.ui.paint_tab_enable_eraser_button,
-            self.ui.paint_tab_enable_rectangle_button,
-            self.ui.paint_tab_enable_ellipse_button,
-            self.ui.paint_tab_enable_polygon_button,
-            self.ui.paint_tab_enable_image_button
-        ]
-
-        for _button in buttons:
-            self.set_button_status(_button, _button.objectName()[17: -7], False)
-
-        self.set_button_status(button, button.objectName()[17: -7], True)
-
-        settings = {
-            "selector": self.ui.empty_settings,
-            "eraser": self.ui.eraser_settings,
-            "pen": self.ui.line_settings,
-            "rectangle": self.ui.shape_settings,
-            "ellipse": self.ui.shape_settings,
-            "polygon": self.ui.shape_settings,
-            "image": self.ui.empty_settings,
-        }
-
-        self.ui.stackedWidget.setCurrentWidget(settings[mode])
-        
-    def paint_tab_load_from_entry(self) -> None:
-        self.paint_graphicsscene.clear()
-        self.paint_tab_paint_line( # paint one line because a bug causes the first line to start with weird coordinates
-            LineNode(
-                [
-                    (1, 1),
-                    (10, 10),
-                ],
-                20,
-                "white"
-            )
-        )
-
-        painter_functions = {
-            "Line": self.paint_tab_paint_line,
-            "Rectangle": self.paint_tab_paint_rectangle,
-            "Ellipse": self.paint_tab_paint_ellipse,
-            "Polygon": self.paint_tab_paint_polygon,
-            "Image": self.paint_tab_paint_image
-            
-        }
-
-        for node in self.paint_data.values():
-            painter_functions[type(node).__name__[:-4]](node)
-
-
-    def paint_tab_paint_line(self, node) -> None:
-        pen = QPen()
-
-        pen.setWidth(node.size)
-        pen.setColor(node.color)
-        pen.setCapStyle(Qt.RoundCap)
-
-        path = QPainterPath(QPointF(*node.coordinates[0]))
-        for point in node.coordinates[1:]:
-            path.quadTo(*[QPointF(*point)] * 2)
-
-        self.paint_tab_actual_item = self.paint_graphicsscene.addPath(
-            path,
-            pen=pen
-            )
-
-
-    def paint_tab_paint_rectangle(self, node) -> None:
-        pen = QPen()
-        brush = QBrush()
-
-        pen.setWidth(node.outline_size)
-        pen.setColor(node.outline_color)
-
-        brush.setStyle(Qt.SolidPattern)
-        brush.setColor(QColor(node.fill_color))
-
-        if node.coordinates[1][1] > node.coordinates[0][1]:
-            top_left, bottom_right = QPoint(*node.coordinates[1]), QPoint(*node.coordinates[0])
-
-        else:
-            top_left, bottom_right = QPoint(*node.coordinates[0]), QPoint(*node.coordinates[1])
-
-        path = QPainterPath()
-        path.addRoundedRect(QRect(top_left, bottom_right), 1, 1)
-
-        self.paint_tab_actual_item = self.paint_graphicsscene.addPath(
-            path,
-            pen=pen,
-            brush=brush
-        )
-
-
-    def paint_tab_paint_ellipse(self, node) -> None:
-        pen = QPen()
-        brush = QBrush()
-
-        pen.setWidth(node.outline_size)
-        pen.setColor(QColor(node.outline_color))
-
-        brush.setStyle(Qt.SolidPattern)
-        brush.setColor(QColor(node.fill_color))
-
-        if node.coordinates[1][1] > node.coordinates[0][1]:
-            top_left, bottom_right = QPoint(*node.coordinates[1]), QPoint(*node.coordinates[0])
-
-        else:
-            top_left, bottom_right = QPoint(*node.coordinates[0]), QPoint(*node.coordinates[1])
-
-        self.paint_tab_actual_item = self.paint_graphicsscene.addEllipse(
-            QRect(
-                top_left,
-                bottom_right
-            ),
-            pen=pen,
-            brush=brush
-        )
-
-
-    def paint_tab_paint_polygon(self, node) -> None:
-        pen = QPen()
-        brush = QBrush()
-
-        pen.setWidth(node.outline_size)
-        pen.setColor(QColor(node.outline_color))
-        pen.setCapStyle(Qt.RoundCap)
-
-        brush.setStyle(Qt.SolidPattern)
-        brush.setColor(QColor(node.fill_color))
-
-        self.paint_tab_actual_item = self.paint_graphicsscene.addPolygon(
-            QPolygon([QPoint(*point) for point in node.coordinates]),
-            pen=pen,
-            brush=brush
-        )
-
-
-    def paint_tab_paint_image(self, node) -> None:
-        raw, size = get_image(node.hash)
-        # self.paint_tab_actual_item = DraggablePixmap(
-        #     QPixmap.fromImage(
-        #         QImage(
-        #             raw,
-        #             *size,
-        #             QImage.Format_ARGB32
-        #         ).scaled(*node.size, Qt.KeepAspectRatio)
-        #     )
-        # )
-
-        # self.paint_graphicsscene.addItem(self.paint_tab_actual_item)
-        self.paint_tab_actual_item = self.paint_graphicsscene.addPixmap(
-                        QPixmap.fromImage(
-                QImage(
-                    raw,
-                    *size,
-                    QImage.Format_ARGB32
-                ).scaled(*node.size, Qt.KeepAspectRatio)
-            )
-        )
-        
-        self.paint_tab_actual_item.setPos(QPointF(*node.coordinate))
-
-
     def load_hierarchical_view(self) -> None:
         """
         load the entry with ID [self.iid] to HierarchicalView
@@ -1024,7 +788,7 @@ class MainWindow(QMainWindow):
     def general_tab_on_insert_entry_button_clicked(self) -> None:
         new_entry = deepcopy(ENTRY_TEMPLATE)
 
-        new_entry["id"] = self.get_next_free_id()
+        new_entry["id"] = self.get_next_free_id(self.get_used_entry_ids())
 
         parent_id = self.entries.get_parent(self.iid)
         new_entry["parent"] = self.iid if self.if_shift_pressed else parent_id
@@ -1033,7 +797,7 @@ class MainWindow(QMainWindow):
             self.entries.set_is_open(self.iid, True)
         
         new_entry["position"] = self.entries.get_position(self.iid) + 1
-        for iid in self.get_children(self.entries.get_parent(self.iid)):
+        for iid in self.get_children_entry(self.entries.get_parent(self.iid)):
             position = self.entries.get_position(iid)
             if position >= new_entry["position"]:
                 self.entries.set_position(iid, position + 1)
@@ -1089,11 +853,207 @@ class MainWindow(QMainWindow):
             else 0
         )
 
+
+    def paint_tab_export(self) -> None:
+        if path := QFileDialog().getSaveFileName(filter="SVG (*.svg)")[0]:
+            svg_generator = QSvgGenerator()
+            svg_generator.setFileName(path)
+            svg_generator.setSize(self.paint_graphicsscene.sceneRect().size().toSize())
+
+            painter = QPainter()
+            painter.begin(svg_generator)
+            painter.setRenderHint(QPainter.Antialiasing)
+            self.paint_graphicsscene.render(painter)
+            painter.end()
+
+
+    def paint_tab_on_clear_button_clicked(self) -> None:
+        self.paint_graphicsscene.clear()
+        self.image_registry.unregister_all_from_iid(self.iid, self.paint_data)
+
+        self.paint_data = {}
+        save_paint(self.iid, self.paint_data)
+
+
+    def paint_tab_enable_paint_mode(self, button: QPushButton, mode: str) -> None:
+        self.entries.set_activated_paint_mode(self.iid, mode)
+
+        buttons = [
+            self.ui.paint_tab_enable_selector_button,
+            self.ui.paint_tab_enable_pen_button,
+            self.ui.paint_tab_enable_eraser_button,
+            self.ui.paint_tab_enable_rectangle_button,
+            self.ui.paint_tab_enable_ellipse_button,
+            self.ui.paint_tab_enable_polygon_button,
+            self.ui.paint_tab_enable_image_button
+        ]
+
+        for _button in buttons:
+            self.set_button_status(_button, _button.objectName()[17: -7], False)
+
+        self.set_button_status(button, button.objectName()[17: -7], True)
+
+        settings = {
+            "selector": self.ui.empty_settings,
+            "eraser": self.ui.eraser_settings,
+            "pen": self.ui.line_settings,
+            "rectangle": self.ui.shape_settings,
+            "ellipse": self.ui.shape_settings,
+            "polygon": self.ui.shape_settings,
+            "image": self.ui.empty_settings,
+        }
+
+        self.ui.stackedWidget.setCurrentWidget(settings[mode])
+        
+    def paint_tab_load_from_entry(self) -> None:
+        self.paint_graphicsscene.clear()
+        self.paint_tab_paint_line( # paint one line because a bug causes the first line to start with weird coordinates
+            LineNode(
+                [
+                    (1, 1),
+                    (10, 10),
+                ],
+                20,
+                "white"
+            )
+        )
+
+        painter_functions = {
+            "Line": self.paint_tab_paint_line,
+            "Rectangle": self.paint_tab_paint_rectangle,
+            "Ellipse": self.paint_tab_paint_ellipse,
+            "Polygon": self.paint_tab_paint_polygon,
+            "Image": self.paint_tab_paint_image
+            
+        }
+
+        for key, node in self.paint_data.items():
+            self.paint_tab_actual_object_id = key
+            painter_functions[type(node).__name__[:-4]](node)
+
+
+    def paint_tab_paint_line(self, node) -> None:
+        pen = QPen()
+
+        pen.setWidth(node.size)
+        pen.setColor(node.color)
+        pen.setCapStyle(Qt.RoundCap)
+
+        path = QPainterPath(QPointF(*node.coordinates[0]))
+        for point in node.coordinates[1:]:
+            path.quadTo(*[QPointF(*point)] * 2)
+
+        self.paint_tab_actual_item = self.paint_graphicsscene.addPath(
+            path,
+            pen=pen
+        )
+        
+        self.paint_tab_actual_item.iid = copy(self.paint_tab_actual_object_id)
+
+
+    def paint_tab_paint_rectangle(self, node) -> None:
+        pen = QPen()
+        brush = QBrush()
+
+        pen.setWidth(node.outline_size)
+        pen.setColor(node.outline_color)
+
+        brush.setStyle(Qt.SolidPattern)
+        brush.setColor(QColor(node.fill_color))
+
+        if node.coordinates[1][1] > node.coordinates[0][1]:
+            top_left, bottom_right = QPoint(*node.coordinates[1]), QPoint(*node.coordinates[0])
+
+        else:
+            top_left, bottom_right = QPoint(*node.coordinates[0]), QPoint(*node.coordinates[1])
+
+        path = QPainterPath()
+        path.addRoundedRect(QRect(top_left, bottom_right), 1, 1)
+
+        self.paint_tab_actual_item = self.paint_graphicsscene.addPath(
+            path,
+            pen=pen,
+            brush=brush
+        )
+
+        self.paint_tab_actual_item.iid = copy(self.paint_tab_actual_object_id)
+
+
+    def paint_tab_paint_ellipse(self, node) -> None:
+        pen = QPen()
+        brush = QBrush()
+
+        pen.setWidth(node.outline_size)
+        pen.setColor(QColor(node.outline_color))
+
+        brush.setStyle(Qt.SolidPattern)
+        brush.setColor(QColor(node.fill_color))
+
+        if node.coordinates[1][1] > node.coordinates[0][1]:
+            top_left, bottom_right = QPoint(*node.coordinates[1]), QPoint(*node.coordinates[0])
+
+        else:
+            top_left, bottom_right = QPoint(*node.coordinates[0]), QPoint(*node.coordinates[1])
+
+        self.paint_tab_actual_item = self.paint_graphicsscene.addEllipse(
+            QRect(
+                top_left,
+                bottom_right
+            ),
+            pen=pen,
+            brush=brush
+        )
+
+        self.paint_tab_actual_item.iid = copy(self.paint_tab_actual_object_id)
+
+
+    def paint_tab_paint_polygon(self, node) -> None:
+        pen = QPen()
+        brush = QBrush()
+
+        pen.setWidth(node.outline_size)
+        pen.setColor(QColor(node.outline_color))
+        pen.setCapStyle(Qt.RoundCap)
+
+        brush.setStyle(Qt.SolidPattern)
+        brush.setColor(QColor(node.fill_color))
+
+        self.paint_tab_actual_item = self.paint_graphicsscene.addPolygon(
+            QPolygon([QPoint(*point) for point in node.coordinates]),
+            pen=pen,
+            brush=brush
+        )
+
+        self.paint_tab_actual_item.iid = copy(self.paint_tab_actual_object_id)
+
+
+    def paint_tab_paint_image(self, node) -> None:
+        raw, size = get_image(node.hash)
+        self.paint_tab_actual_item = self.paint_graphicsscene.addPixmap(
+            QPixmap.fromImage(
+                QImage(
+                    raw,
+                    *size,
+                    QImage.Format_ARGB32
+                ).scaled(*node.size, Qt.KeepAspectRatio)
+            )
+        )
+        
+        self.paint_tab_actual_item.setPos(QPointF(*node.coordinate))
+        self.paint_tab_actual_item.iid = copy(self.paint_tab_actual_object_id)
+
+
     def paint_tab_on_graphicsview_pressed(self, event: QMouseEvent) -> None:
         self.paint_tab_only_pressed = True
         self.paint_tab_start_coordinates = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toTuple()
 
         match self.entries.get_activated_paint_mode(self.iid):
+            case "selector":
+                mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
+                self.selected_item = self.paint_graphicsscene.itemAt(*self.ui.paint_graphicsview.mapToScene(event.position().toPoint()).toTuple(), self.ui.paint_graphicsview.viewportTransform())
+                if not self.selected_item is None:
+                    self.selected_item_relative_to_mouse_position = self.ui.paint_graphicsview.mapToScene(*self.selected_item.pos().toTuple()) - mouse_position  
+
             case "polygon":
                 if self.paint_tab_only_pressed and not self.paint_tab_is_polygon_unfinished:
                     self.paint_tab_is_polygon_unfinished = True
@@ -1127,6 +1087,8 @@ class MainWindow(QMainWindow):
                         self.image_registry.register_image(image_hash)
 
                     self.image_registry.register_image_usage(image_hash, self.iid)
+
+                    self.paint_tab_actual_object_id = self.paint_tab_get_new_id()
                     self.paint_data[self.paint_tab_actual_object_id] = ImageNode(
                         self.paint_tab_start_coordinates,
                         (50, 50),
@@ -1137,24 +1099,13 @@ class MainWindow(QMainWindow):
                     save_paint(self.iid, self.paint_data)
 
 
-    def paint_tab_finish_polygon(self) -> None:
-        self.paint_graphicsscene.removeItem(self.paint_tab_actual_item)
-        self.paint_data[self.paint_tab_actual_object_id] = PolygonNode(
-            self.paint_data[self.paint_tab_actual_object_id].coordinates,
-            self.entries.get_shape_outline_size(self.iid),
-            self.entries.get_shape_outline_color(self.iid),
-            self.entries.get_shape_fill_color(self.iid),
-        )
-
-        self.paint_tab_paint_polygon(self.paint_data[self.paint_tab_actual_object_id])
-
-        self.paint_tab_is_polygon_unfinished = False
-
-        save_paint(self.iid, self.paint_data)
-
-
     def paint_tab_on_graphicsview_moved(self, event: QMouseEvent) -> None:
         match self.entries.get_activated_paint_mode(self.iid):
+            case "selector":
+                if isinstance(self.selected_item, QGraphicsPixmapItem):
+                    mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
+                    self.selected_item.setPos(mouse_position + self.selected_item_relative_to_mouse_position)
+                        
             case "pen":
                 if self.paint_tab_only_pressed:
                     new_id = self.paint_tab_get_new_id()
@@ -1246,6 +1197,37 @@ class MainWindow(QMainWindow):
                 self.paint_tab_paint_ellipse(self.paint_data[self.paint_tab_actual_object_id])
 
 
+    def paint_tab_on_graphicsview_released(self, event: QMouseEvent) -> None:
+        match self.entries.get_activated_paint_mode(self.iid):
+            case "pen" | "eraser" | "rectangle" | "ellipse":
+                save_paint(self.iid, self.paint_data)
+
+            case "selector":
+                if not self.selected_item is None:
+                    node = self.paint_data[self.selected_item.iid]
+                    if isinstance(node, ImageNode):
+                        node.coordinate = self.selected_item.pos().toTuple()
+
+                    save_paint(self.iid, self.paint_data)
+
+
+    def paint_tab_finish_polygon(self) -> None:
+        self.paint_graphicsscene.removeItem(self.paint_tab_actual_item)
+        self.paint_data[self.paint_tab_actual_object_id] = PolygonNode(
+            self.get_next_free_id(self.get_used_paint_ids()),
+            self.paint_data[self.paint_tab_actual_object_id].coordinates,
+            self.entries.get_shape_outline_size(self.iid),
+            self.entries.get_shape_outline_color(self.iid),
+            self.entries.get_shape_fill_color(self.iid),
+        )
+
+        self.paint_tab_paint_polygon(self.paint_data[self.paint_tab_actual_object_id])
+
+        self.paint_tab_is_polygon_unfinished = False
+
+        save_paint(self.iid, self.paint_data)
+
+
     def paint_tab_on_eraser_size_changed(self, size) -> None:
         self.entries.set_eraser_size(self.iid, size)
 
@@ -1256,12 +1238,6 @@ class MainWindow(QMainWindow):
 
     def paint_tab_on_outline_size_changed(self, size) -> None:
         self.entries.set_shape_outline_size(self.iid, size)
-
-
-    def paint_tab_on_graphicsview_released(self, event: QMouseEvent) -> None:
-        match self.entries.get_activated_paint_mode(self.iid):
-            case "pen" | "eraser" | "rectangle" | "ellipse":
-                save_paint(self.iid, self.paint_data)
 
 
     def general_tab_name_color_function(self, color: QColor) -> None:
@@ -1507,7 +1483,7 @@ class MainWindow(QMainWindow):
         return self.hierarchical_view_model.data(index, role=ID_ROLE)
 
 
-    def get_used_ids(self) -> list[str]:
+    def get_used_entry_ids(self) -> list[str]:
         """
         return all used IDs
         """
@@ -1518,17 +1494,18 @@ class MainWindow(QMainWindow):
         """
         return the first ID
         """
-        return str(min(int(iid) for iid in self.get_used_ids()))
+        return str(min(int(iid) for iid in self.get_used_entry_ids()))
 
 
-    def get_next_free_id(self) -> str:
+    def get_next_free_id(self, ids: list[str | int]) -> str:
         """
         return the next free ID
         """
-        return str(max(int(iid) for iid in self.get_used_ids()) + 1)
+        ids = [0]
+        return 1 if not ids else str(max(int(iid) for iid in ids) + 1)
 
 
-    def get_children(self, parent_id: str) -> list[str]:
+    def get_children_entry(self, parent_id: str) -> list[str]:
         """
         return the IDs of all children
         """
