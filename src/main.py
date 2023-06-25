@@ -1500,7 +1500,6 @@ class MainWindow(QMainWindow):
         """
         return the next free ID
         """
-        ids = [0]
         return 1 if not ids else str(max(int(iid) for iid in ids) + 1)
 
 
