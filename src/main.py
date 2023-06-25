@@ -1052,7 +1052,7 @@ class MainWindow(QMainWindow):
                 mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
                 self.selected_item = self.paint_graphicsscene.itemAt(*self.ui.paint_graphicsview.mapToScene(event.position().toPoint()).toTuple(), self.ui.paint_graphicsview.viewportTransform())
                 if not self.selected_item is None:
-                    self.selected_item_relative_to_mouse_position = self.ui.paint_graphicsview.mapToScene(*self.selected_item.pos().toTuple()) - mouse_position  
+                    self.selected_item_relative_to_mouse_position = self.selected_item.pos() - mouse_position  
 
             case "polygon":
                 if self.paint_tab_only_pressed and not self.paint_tab_is_polygon_unfinished:
