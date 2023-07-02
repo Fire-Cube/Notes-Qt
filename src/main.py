@@ -37,7 +37,7 @@ from typing import Callable
 from PySide6.QtCore import SIGNAL, QEvent, QMargins, QModelIndex, QObject, QPoint, QPointF, QRect, Qt, QTranslator
 from PySide6.QtGui import QBrush, QColor, QFont, QFontMetrics, QImage, QMouseEvent, QPainter, QPainterPath, QPen, QPixmap, QPolygon, QStandardItem, QStandardItemModel, QTextDocument
 from PySide6.QtSvg import QSvgGenerator
-from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsPixmapItem
+from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsPixmapItem, QGraphicsEllipseItem, QGraphicsPolygonItem, QGraphicsPathItem, QGraphicsRectItem
 from tendo.singleton import SingleInstance, SingleInstanceException
 
 from BlurWindow.blurWindow import blur
@@ -241,6 +241,7 @@ class MainWindow(QMainWindow):
         self.paint_data = {}
 
         self.selected_item = None
+        self.selected_item_start_position = QPoint()
         self.selected_item_relative_to_mouse_position = QPoint()
 
         # set all variables that will be used later
@@ -914,7 +915,8 @@ class MainWindow(QMainWindow):
                     (10, 10),
                 ],
                 20,
-                "white"
+                "white",
+                True
             )
         )
 
@@ -924,7 +926,6 @@ class MainWindow(QMainWindow):
             "Ellipse": self.paint_tab_paint_ellipse,
             "Polygon": self.paint_tab_paint_polygon,
             "Image": self.paint_tab_paint_image
-            
         }
 
         for key, node in self.paint_data.items():
@@ -938,6 +939,7 @@ class MainWindow(QMainWindow):
         pen.setWidth(node.size)
         pen.setColor(node.color)
         pen.setCapStyle(Qt.RoundCap)
+        pen.setJoinStyle(Qt.RoundJoin)
 
         path = QPainterPath(QPointF(*node.coordinates[0]))
         for point in node.coordinates[1:]:
@@ -957,6 +959,8 @@ class MainWindow(QMainWindow):
 
         pen.setWidth(node.outline_size)
         pen.setColor(node.outline_color)
+        pen.setCapStyle(Qt.RoundCap)
+        pen.setJoinStyle(Qt.RoundJoin)
 
         brush.setStyle(Qt.SolidPattern)
         brush.setColor(QColor(node.fill_color))
@@ -1014,6 +1018,7 @@ class MainWindow(QMainWindow):
         pen.setWidth(node.outline_size)
         pen.setColor(QColor(node.outline_color))
         pen.setCapStyle(Qt.RoundCap)
+        pen.setJoinStyle(Qt.RoundJoin)
 
         brush.setStyle(Qt.SolidPattern)
         brush.setColor(QColor(node.fill_color))
@@ -1052,7 +1057,8 @@ class MainWindow(QMainWindow):
                 mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
                 self.selected_item = self.paint_graphicsscene.itemAt(*self.ui.paint_graphicsview.mapToScene(event.position().toPoint()).toTuple(), self.ui.paint_graphicsview.viewportTransform())
                 if not self.selected_item is None:
-                    self.selected_item_relative_to_mouse_position = self.selected_item.pos() - mouse_position  
+                    self.selected_item_relative_to_mouse_position = self.selected_item.pos() - mouse_position
+                    self.selected_item_start_position = self.selected_item.pos()
 
             case "polygon":
                 if self.paint_tab_only_pressed and not self.paint_tab_is_polygon_unfinished:
@@ -1065,6 +1071,7 @@ class MainWindow(QMainWindow):
                             self.paint_tab_start_coordinates,
                             self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toTuple()
                         ],
+                        False,
                         self.entries.get_shape_outline_size(self.iid),
                         self.entries.get_shape_outline_color(self.iid),
                     )
@@ -1102,9 +1109,14 @@ class MainWindow(QMainWindow):
     def paint_tab_on_graphicsview_moved(self, event: QMouseEvent) -> None:
         match self.entries.get_activated_paint_mode(self.iid):
             case "selector":
-                if isinstance(self.selected_item, QGraphicsPixmapItem):
-                    mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
-                    self.selected_item.setPos(mouse_position + self.selected_item_relative_to_mouse_position)
+                if isinstance(self.selected_item, (QGraphicsPixmapItem, QGraphicsRectItem, QGraphicsPolygonItem, QGraphicsPathItem, QGraphicsEllipseItem)):
+                    node = self.paint_data[self.selected_item.iid]
+                    if hasattr(node, "is_eraser") and node.is_eraser:
+                        pass
+
+                    else:
+                        mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
+                        self.selected_item.setPos(mouse_position + self.selected_item_relative_to_mouse_position)
                         
             case "pen":
                 if self.paint_tab_only_pressed:
@@ -1117,6 +1129,7 @@ class MainWindow(QMainWindow):
                         ],
                         self.entries.get_line_size(self.iid),
                         self.entries.get_line_color(self.iid),
+                        False
                     )
 
                     self.paint_tab_actual_object_id = new_id
@@ -1138,7 +1151,8 @@ class MainWindow(QMainWindow):
                             self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toTuple()
                         ],
                         self.entries.get_eraser_size(self.iid),
-                        "white"
+                        "white",
+                        True
                     )
 
                     self.paint_tab_actual_object_id = new_id
@@ -1207,6 +1221,14 @@ class MainWindow(QMainWindow):
                     node = self.paint_data[self.selected_item.iid]
                     if isinstance(node, ImageNode):
                         node.coordinate = self.selected_item.pos().toTuple()
+
+                    if isinstance(node, (LineNode, RectangleNode, EllipseNode, PolygonNode)):
+                        if hasattr(node, "is_eraser") and node.is_eraser:
+                            pass
+
+                        else:
+                            position_difference = (self.selected_item.pos() - self.selected_item_start_position).toTuple()
+                            node.coordinates = [(point[0] + position_difference[0], point[1] + position_difference[1]) for point in node.coordinates]
 
                     save_paint(self.iid, self.paint_data)
 

@@ -6,6 +6,7 @@ class LineNode:
     coordinates: list[tuple[float, float]]
     size: float
     color: str
+    is_eraser: bool
 
 
 @dataclass
