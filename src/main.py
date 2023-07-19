@@ -11,6 +11,8 @@
 # nuitka-project: --jobs=12
 # nuitka-project: --plugin-enable=pyside6
 # nuitka-project: --prefer-source-code
+# nuitka-project: --follow-stdlib
+# nuitka-project: --include-module=importlib._abc
 
 # exe settings
 # nuitka-project: --windows-icon-from-ico=designer/resources/icon.ico
