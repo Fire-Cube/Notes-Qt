@@ -28,9 +28,10 @@ python = [
     "storage/painting_nodes.py",
     "storage/paths.py",
     "storage/templates.py",
-    "big_constants.py",
+    "constants.py",
     "random_id.py",
-    "tools.py",
+    "custom_widgets.py",
+    "shared.py",
     "main.py"
 ]
 
