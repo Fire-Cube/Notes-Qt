@@ -32,6 +32,7 @@ python = [
     "random_id.py",
     "custom_widgets.py",
     "shared.py",
+    "special_logging.py",
     "main.py"
 ]
 
