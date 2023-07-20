@@ -1410,6 +1410,7 @@ class MainWindow(QMainWindow):
         SettingsDialog(self.settings, self.on_color_button_clicked, self.set_color_button_color)
         self.update_background()
         self.update_language()
+        self.load_entry()
 
 
     def search_tab_update_search(self) -> None:
