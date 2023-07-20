@@ -1,5 +1,6 @@
 import hashlib
 import orjson
+import lzma
 
 from PIL import Image
 from pathlib import Path
@@ -31,7 +32,7 @@ def get_cache_path(image_hash: str) -> Path:
 def import_image(path: Path) -> str:
     image = Image.open(path)
     image.convert("RGBA")
-    with open(get_cache_path(f"{get_hash_from_image(path)}_image"), "wb") as image_file:
+    with lzma.open(get_cache_path(f"{get_hash_from_image(path)}_image"), "wb") as image_file:
         image_file.write(image.tobytes("raw", "RGBA"))
 
     with open(get_cache_path(f"{get_hash_from_image(path)}_size"), "wb") as size_file:
@@ -43,7 +44,7 @@ def remove_image(image_hash: str) -> None:
     get_cache_path(f"{image_hash}_size").unlink()
 
 def get_image(image_hash: str) -> tuple[bytes, tuple[int, int]]:
-    with open(f"{get_cache_path(image_hash)}_image", "rb") as image_file:
+    with lzma.open(f"{get_cache_path(image_hash)}_image", "rb") as image_file:
         with open(get_cache_path(f"{image_hash}_size"), "rb") as size_file:
             return image_file.read(), orjson.loads(size_file.read())
 
