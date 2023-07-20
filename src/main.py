@@ -1561,6 +1561,9 @@ def main() -> None:
     if not Path("data").is_dir():
         prepare_first_run()
 
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+
     app = QApplication(sys.argv)
 
     app.setFont(QFont("Segoe UI", 9, QFont.Normal))
@@ -1568,11 +1571,6 @@ def main() -> None:
     window = MainWindow(app)
     window.show()
 
-    screen = window.screen() # Gibt den aktuellen Bildschirm zurück
-    dpi = screen.logicalDotsPerInch() # Gibt die DPI des Bildschirms zurück
-    font = window.font() # Gibt die Schriftart des Fensters zurück
-    font.setPointSizeF(font.pointSizeF() * dpi / 96) # Skaliert die Schriftgröße nach DPI
-    window.setFont(font) # Setzt die Schriftart des Fenster
     app.exec()
 
 if __name__ == "__main__":
