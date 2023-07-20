@@ -20,7 +20,6 @@
 # nuitka-project: --windows-product-name=Notes
 # nuitka-project: --windows-file-version=1.0
 
-import logging
 import os
 import sys
 
@@ -46,6 +45,8 @@ from BlurWindow.blurWindow import blur
 
 from constants import *
 from random_id import IDGenerator
+from special_logging import LOG_HIERARCHICAL_VIEW_UPDATES, LOG_CHOOSEN_COLOR, LOG_PROFILING, log
+
 from storage.helpers import delete_data, prepare_first_run
 from storage.images import Registry, get_hash_from_image, get_image, import_image
 from storage.paint import create_new_paint, delete_paint, load_paint, save_paint
@@ -697,7 +698,8 @@ class MainWindow(QMainWindow):
         """
         load the entry with ID [self.iid] to HierarchicalView
         """
-        logging.info("reload hierarchical view")
+        log("reloaded hierarchical view", LOG_HIERARCHICAL_VIEW_UPDATES)
+
         self.dont_save_expanded_status = True
 
         if self.ui.name_entry.receivers(SIGNAL("self.on_name_text_edited()")) > 0:
@@ -837,12 +839,13 @@ class MainWindow(QMainWindow):
             color_dialog.setCustomColor(i, QColor(color))
 
         color = button.palette().color(button.backgroundRole())
-        print(color)
         if transparency:
             color = color_dialog.getColor(color, options=QColorDialog.ShowAlphaChannel | QColorDialog.DontUseNativeDialog)
 
         else:
              color = color_dialog.getColor(color, options=QColorDialog.DontUseNativeDialog)
+
+        log(f"choosen color {color.name()} by {button.objectName()}", LOG_CHOOSEN_COLOR)
 
         # update color in UI
         if color.isValid(): # check if color was set
@@ -1579,14 +1582,13 @@ def main() -> None:
     app.exec()
 
 if __name__ == "__main__":
-    logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
     if "profile" in sys.argv:
-        print("profiling")
+        log("profiling", LOG_PROFILING)
         pr = cProfile.Profile()
         pr.enable()
         main()
         pr.disable()
-        print("profiling finished")
+        log("profiling finished", LOG_PROFILING)
         pr.dump_stats("stats")
 
     else:

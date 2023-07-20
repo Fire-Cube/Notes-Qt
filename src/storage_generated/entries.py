@@ -7,6 +7,7 @@ from copy import deepcopy
 
 import orjson
 
+from special_logging import LOG_ENTRY_CHANGES, log
 from storage.paths import ENTRIES_FILE_PATH
 
 class InvalidIDError(BaseException):
@@ -37,6 +38,8 @@ class Entries(list):
 
     def set_parent(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of parent changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -75,6 +78,8 @@ class Entries(list):
 
     def set_id(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of id changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -113,6 +118,8 @@ class Entries(list):
 
     def set_is_open(self, iid: str, data: bool) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of is_open changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -151,6 +158,8 @@ class Entries(list):
 
     def set_text(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of text changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -189,6 +198,8 @@ class Entries(list):
 
     def set_activated_paint_mode(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of activated_paint_mode changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -227,6 +238,8 @@ class Entries(list):
 
     def set_eraser_size(self, iid: str, data: int) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of eraser_size changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -265,6 +278,8 @@ class Entries(list):
 
     def set_line_size(self, iid: str, data: int) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of line_size changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -303,6 +318,8 @@ class Entries(list):
 
     def set_line_color(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of line_color changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -341,6 +358,8 @@ class Entries(list):
 
     def set_shape_fill_color(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of shape_fill_color changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -379,6 +398,8 @@ class Entries(list):
 
     def set_shape_outline_color(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of shape_outline_color changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -417,6 +438,8 @@ class Entries(list):
 
     def set_shape_outline_size(self, iid: str, data: int) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of shape_outline_size changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -455,6 +478,8 @@ class Entries(list):
 
     def set_position(self, iid: str, data: int) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of position changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -493,6 +518,8 @@ class Entries(list):
 
     def set_creation_time(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of creation_time changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -529,6 +556,8 @@ class Entries(list):
 
     def set_modification_time(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of modification_time changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -565,6 +594,8 @@ class Entries(list):
 
     def set_tags(self, iid: str, data: list) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of tags changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -603,6 +634,8 @@ class Entries(list):
 
     def set_name_text(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of name_text changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
@@ -641,6 +674,8 @@ class Entries(list):
 
     def set_name_color(self, iid: str, data: str) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of name_color changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 

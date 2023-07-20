@@ -7,6 +7,7 @@ from copy import deepcopy
 
 import orjson
 
+from special_logging import LOG_ENTRY_CHANGES, log
 from storage.paths import ENTRIES_FILE_PATH
 
 class InvalidIDError(BaseException):
@@ -38,6 +39,8 @@ class Entries(list):
 
     def set_{{ method_name }}(self, iid: str, data: {{ get_function_type_hint(data_type) }}) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of {{ method_name }} changed", LOG_ENTRY_CHANGES)
+        
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
 
