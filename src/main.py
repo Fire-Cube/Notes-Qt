@@ -477,10 +477,14 @@ class MainWindow(QMainWindow):
         load the entry with ID [self.iid]
         """
         self.settings.set_active_entry(self.iid)
+        
+        self.entries.on_save = lambda: False
+
         self.load_general_tab()
         self.load_text_tab()
         self.load_paint_tab()
 
+        self.entries.on_save = self.on_save
 
     def load_specific_entry(self, iid) -> None:
         self.iid = iid
