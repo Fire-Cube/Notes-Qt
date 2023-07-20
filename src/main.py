@@ -466,7 +466,7 @@ class MainWindow(QMainWindow):
 
     def load_entries(self) -> None:
         """
-        update self.settings from storage
+        update self.entries from storage
         """
         self.entries = load_entries()
         self.entries.on_save = self.on_save
