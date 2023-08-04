@@ -687,9 +687,9 @@ class MainWindow(QMainWindow):
 
     def load_search_tab(self) -> None:
         self.ui.tags_combobox.clear()
-        tags = [""]
+        tags = set("")
         for entry in self.entries:
-            tags.extend(entry["tags"])
+            tags.update(entry["tags"])
 
         self.ui.tags_combobox.addItems(tags)
 
