@@ -478,12 +478,11 @@ class MainWindow(QMainWindow):
         load the entry with ID [self.iid]
         """
         self.settings.set_active_entry(self.iid)
-        
-        self.entries.on_save = lambda: False
 
-        self.load_general_tab()
-        self.load_text_tab()
-        self.load_paint_tab()
+        with DontUpdateModificationTime(self):
+            self.load_general_tab()
+            self.load_text_tab()
+            self.load_paint_tab()
 
         self.entries.on_save = self.on_save
 
@@ -786,12 +785,14 @@ class MainWindow(QMainWindow):
 
     def hierarchical_view_on_treeview_item_expanded(self, index) -> None:
         if not self.dont_save_expanded_status:
-            self.entries.set_is_open(self.get_treeview_item_id_by_index(index), True)
+            with DontUpdateModificationTime(self):
+                self.entries.set_is_open(self.get_treeview_item_id_by_index(index), True)
 
 
     def hierarchical_view_on_treeview_item_collapsed(self, index) -> None:
         if not self.dont_save_expanded_status:
-            self.entries.set_is_open(self.get_treeview_item_id_by_index(index), False)
+            with DontUpdateModificationTime(self):
+                self.entries.set_is_open(self.get_treeview_item_id_by_index(index), False)
 
 
     def general_tab_on_insert_entry_button_clicked(self) -> None:
@@ -1553,6 +1554,19 @@ class DontUpdateText:
 
     def __exit__(self, *args) -> None:
         self.window.dont_update_text = False
+
+
+class DontUpdateModificationTime:
+    def __init__(self, window: MainWindow) -> None:
+        self.window = window
+
+
+    def __enter__(self) -> None:
+        self.window.entries.on_save = lambda: False
+
+
+    def __exit__(self, *args) -> None:
+        self.window.entries.on_save = self.window.on_save
 
 
 def main() -> None:
