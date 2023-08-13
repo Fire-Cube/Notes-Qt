@@ -484,7 +484,6 @@ class MainWindow(QMainWindow):
             self.load_text_tab()
             self.load_paint_tab()
 
-        self.entries.on_save = self.on_save
 
     def load_specific_entry(self, iid) -> None:
         self.iid = iid
