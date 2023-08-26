@@ -497,6 +497,7 @@ class MainWindow(QMainWindow):
     def load_specific_entry(self, iid) -> None:
         self.iid = iid
         self.load_entry()
+        self.ui.MainTabManager.setCurrentIndex(0)
 
 
     def load_general_tab(self) -> None:
