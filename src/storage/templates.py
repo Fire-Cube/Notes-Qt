@@ -35,7 +35,7 @@ ENTRY_TEMPLATE = {
 }
 
 SETTINGS_TEMPLATE = {
-    "background_image": 1,
+    "background_image": 2,
     "background_color": "#ffffff",
     "background_acryl": True,
     "background_mode": "image",
