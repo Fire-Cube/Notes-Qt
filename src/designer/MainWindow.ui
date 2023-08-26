@@ -1260,9 +1260,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="geometry">
        <rect>
-        <x>470</x>
+        <x>460</x>
         <y>0</y>
-        <width>391</width>
+        <width>341</width>
         <height>60</height>
        </rect>
       </property>
@@ -1275,7 +1275,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="empty_settings"/>
       <widget class="QWidget" name="eraser_settings">
@@ -1309,7 +1309,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QSpinBox" name="paint_tab_line_settings_size_spinbox">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>220</x>
           <y>17</y>
           <width>51</width>
           <height>31</height>
@@ -1334,7 +1334,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QPushButton" name="paint_tab_line_settings_color_button">
         <property name="geometry">
          <rect>
-          <x>300</x>
+          <x>280</x>
           <y>10</y>
           <width>45</width>
           <height>45</height>
@@ -1359,12 +1359,31 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </size>
         </property>
        </widget>
+       <widget class="QCheckBox" name="paint_tab_line_settings_one_click_line_checkbutton">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>17</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="toolTipDuration">
+         <number>-5</number>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">	background-color: rgba(255, 255, 255, 150);</string>
+        </property>
+        <property name="text">
+         <string>One-Click Line</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="shape_settings">
        <widget class="QPushButton" name="paint_tab_shape_settings_fill_color_button">
         <property name="geometry">
          <rect>
-          <x>300</x>
+          <x>280</x>
           <y>10</y>
           <width>45</width>
           <height>45</height>
@@ -1392,7 +1411,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QSpinBox" name="paint_tab_shape_settings_outline_size_spinbox">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>150</x>
           <y>17</y>
           <width>51</width>
           <height>31</height>
@@ -1417,7 +1436,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QPushButton" name="paint_tab_shape_settings_outline_color_button">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>220</x>
           <y>10</y>
           <width>45</width>
           <height>45</height>
@@ -1966,6 +1985,47 @@ QAbstractItemView::corner {
       </property>
       <property name="resizeAnchor">
        <enum>QGraphicsView::NoAnchor</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="paint_tab_undo_button">
+      <property name="geometry">
+       <rect>
+        <x>810</x>
+        <y>10</y>
+        <width>50</width>
+        <height>45</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>export</string>
+      </property>
+      <property name="toolTipDuration">
+       <number>-5</number>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+					   QPushButton:hover {
+					   background-color: rgb(242, 242, 242);
+					   icon: url(:/ui/undoHover.png);
+					   }
+
+					   QPushButton {
+					   background-color: white;
+					   }
+				   </string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/main_window_resources.qrc">
+        <normaloff>:/ui/undo.png</normaloff>:/ui/undo.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
       </property>
      </widget>
     </widget>

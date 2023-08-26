@@ -7,6 +7,7 @@ ENTRY_TEMPLATE = {
     "is_open": False,
     "paint_tab": {
         "activated_mode": "pen",
+        "one_click_line_mode": False,
         "eraser": {
             "size": 10,
         },

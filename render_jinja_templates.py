@@ -45,6 +45,7 @@ entries_specification = [
     ["text", ["str"], "text"],
 
     ["activated_paint_mode", ["str"], "paint_tab.activated_mode"],
+    ["one_click_line_mode", ["bool"], "paint_tab.one_click_line_mode"],
     ["eraser_size", ["int"], "paint_tab.eraser.size"],
     ["line_size", ["int"], "paint_tab.line.line_size"],
     ["line_color", ["str"], "paint_tab.line.line_color"],

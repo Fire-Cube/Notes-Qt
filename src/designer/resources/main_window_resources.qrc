@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="ui">
+    <file>undo.png</file>
+    <file>undoHover.png</file>
     <file>settings.png</file>
     <file>url.png</file>
     <file>urlHover.png</file>

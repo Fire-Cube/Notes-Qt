@@ -221,6 +221,46 @@ class Entries(list):
         
         self.on_save()
         
+    def get_one_click_line_mode(self, iid: str) -> bool:
+        if not isinstance(iid, str):
+            raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
+
+        index = None
+        for i, entry in enumerate(self):
+            if entry["id"] == iid:
+                index = i
+
+        if index is None:
+            raise InvalidIDError(f"The ID: {iid} doesn't exists")
+
+        return deepcopy(self[index]['paint_tab']['one_click_line_mode'])
+
+
+    def set_one_click_line_mode(self, iid: str, data: bool) -> None:
+        # sourcery skip: remove-unnecessary-else, swap-if-else-branches
+        log("value of one_click_line_mode changed", LOG_ENTRY_CHANGES)
+        
+        if not isinstance(iid, str):
+            raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
+
+        if isinstance(data, bool):
+            index = None
+            for i, entry in enumerate(self):
+                if entry["id"] == iid:
+                    index = i
+
+            if index is None:
+                raise InvalidIDError(f"The ID: {iid} doesn't exists")
+
+            self[index]['paint_tab']['one_click_line_mode'] = data
+
+        else:
+            raise TypeError(f"entries.paint_tab.one_click_line_mode: Type of value '{data!r}' {type(data)} is not in specification")
+
+        self.save()
+        
+        self.on_save()
+        
     def get_eraser_size(self, iid: str) -> int:
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")

@@ -8,3 +8,4 @@ pillow           # image editing
 pyprof2calltree  # prepare profile file for visualizing
 unidecode        # utils for handling codecs
 BlurWindow       # blur background of a window
+dictdiffer       # differ for dictionarys

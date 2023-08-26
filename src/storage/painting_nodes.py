@@ -26,6 +26,13 @@ class EllipseNode:
 
 
 @dataclass
+class PointNode:
+    coordinate: tuple[float, float]
+    color: str
+    size: float
+
+
+@dataclass
 class PolygonNode:
     coordinates: list[tuple[float, float]]
     outline_size: float
