@@ -1305,7 +1305,7 @@ class MainWindow(QMainWindow):
                     if isinstance(node, ImageNode):
                         node.coordinate = self.selected_item.pos().toTuple()
 
-                    if isinstance(node, (LineNode, RectangleNode, EllipseNode, PolygonNode)):
+                    elif isinstance(node, (LineNode, RectangleNode, EllipseNode, PolygonNode)):
                         if hasattr(node, "is_eraser") and node.is_eraser:
                             pass
 
@@ -1313,7 +1313,10 @@ class MainWindow(QMainWindow):
                             position_difference = (self.selected_item.pos() - self.selected_item_start_position).toTuple()
                             node.coordinates = [(point[0] + position_difference[0], point[1] + position_difference[1]) for point in node.coordinates]
 
-                    save_paint(self.iid, self.paint_data)
+                    elif isinstance(node, PointNode):
+                        position_difference = (self.selected_item.pos() - self.selected_item_start_position).toTuple()
+                        node.coordinate = (node.coordinate[0] + position_difference[0], node.coordinate[1] + position_difference[1])
+                        save_paint(self.iid, self.paint_data)
 
         self.paint_tab_update_history()
 
