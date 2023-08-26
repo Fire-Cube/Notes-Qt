@@ -1060,7 +1060,11 @@ class MainWindow(QMainWindow):
 
 
     def paint_tab_paint_point(self, node) -> None:
+        pen = QPen()
         brush = QBrush()
+
+        pen.setWidth(0)
+        pen.setColor(QColor(node.color))
 
         brush.setStyle(Qt.SolidPattern)
         brush.setColor(QColor(node.color))
@@ -1071,6 +1075,7 @@ class MainWindow(QMainWindow):
                 top_left,
                 bottom_right
             ),
+            pen=pen,
             brush=brush
         )
 
