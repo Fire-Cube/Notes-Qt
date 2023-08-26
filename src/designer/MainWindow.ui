@@ -381,7 +381,7 @@ QToolTip {
      <string notr="true">border-width:0px; border-radius:7px</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="general_tab">
      <attribute name="title">
@@ -1997,7 +1997,7 @@ QAbstractItemView::corner {
        </rect>
       </property>
       <property name="toolTip">
-       <string>export</string>
+       <string>undo</string>
       </property>
       <property name="toolTipDuration">
        <number>-5</number>
@@ -2084,6 +2084,9 @@ QAbstractItemView::corner {
         <width>71</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>Regex</string>
       </property>
       <property name="toolTipDuration">
        <number>-5</number>

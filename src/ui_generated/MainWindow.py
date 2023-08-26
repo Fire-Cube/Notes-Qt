@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -1272,7 +1272,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.MainTabManager.setCurrentIndex(2)
+        self.MainTabManager.setCurrentIndex(0)
         self.stackedWidget.setCurrentIndex(3)
 
 
@@ -1413,7 +1413,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.paint_tab_enable_image_button.setText("")
 #if QT_CONFIG(tooltip)
-        self.paint_tab_undo_button.setToolTip(QCoreApplication.translate("MainWindow", u"export", None))
+        self.paint_tab_undo_button.setToolTip(QCoreApplication.translate("MainWindow", u"undo", None))
 #endif // QT_CONFIG(tooltip)
         self.paint_tab_undo_button.setText("")
         self.MainTabManager.setTabText(self.MainTabManager.indexOf(self.paint_tab), QCoreApplication.translate("MainWindow", u"Paint", None))
@@ -1421,6 +1421,9 @@ class Ui_MainWindow(object):
         self.case_sensitive_checkbox.setToolTip(QCoreApplication.translate("MainWindow", u"Case Sensitive", None))
 #endif // QT_CONFIG(tooltip)
         self.case_sensitive_checkbox.setText(QCoreApplication.translate("MainWindow", u"Case Sensitive", None))
+#if QT_CONFIG(tooltip)
+        self.regex_checkbox.setToolTip(QCoreApplication.translate("MainWindow", u"Regex", None))
+#endif // QT_CONFIG(tooltip)
         self.regex_checkbox.setText(QCoreApplication.translate("MainWindow", u"Regex", None))
         self.search_mode_combobox.setItemText(0, QCoreApplication.translate("MainWindow", u"name", None))
         self.search_mode_combobox.setItemText(1, QCoreApplication.translate("MainWindow", u"text", None))
