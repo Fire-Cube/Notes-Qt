@@ -7,3 +7,4 @@ src/designer/resources/image_settings_dialog_resources_rc.py
 src/designer/resources/main_window_resources_rc.py
 src/designer/resources/settings_dialog_resources_rc.py
 test.py
+to-uninstall.txt
