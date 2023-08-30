@@ -24,14 +24,12 @@
     </message>
     <message>
         <location filename="../designer/MainWindow.ui" line="469"/>
-        <location filename="../designer/MainWindow.ui" line="679"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;create new&lt;/p&gt;&lt;p&gt;press &amp;quot;Shift&amp;quot; to create a sub entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;erstelle neu&lt;/p&gt;&lt;p&gt;drücke &amp;quot;Shift&amp;quot; um einen Unter-Eintrag zu erstellen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="510"/>
         <source>Name Color</source>
-        <translation type="unfinished">Namensfarbe</translation>
+        <translation type="obsolete">Namensfarbe</translation>
     </message>
     <message>
         <source>creation date:</source>
@@ -63,31 +61,30 @@
     </message>
     <message>
         <location filename="../designer/MainWindow.ui" line="864"/>
-        <location filename="../designer/MainWindow.ui" line="1599"/>
+        <location filename="../designer/MainWindow.ui" line="1602"/>
         <source>bold</source>
         <translation type="unfinished">fett</translation>
     </message>
     <message>
         <location filename="../designer/MainWindow.ui" line="899"/>
-        <location filename="../designer/MainWindow.ui" line="1558"/>
+        <location filename="../designer/MainWindow.ui" line="1561"/>
         <source>italic</source>
         <translation type="unfinished">kursiv</translation>
     </message>
     <message>
         <location filename="../designer/MainWindow.ui" line="934"/>
-        <location filename="../designer/MainWindow.ui" line="1517"/>
+        <location filename="../designer/MainWindow.ui" line="1520"/>
         <source>underline</source>
         <translation type="unfinished">unterstrichen</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1082"/>
-        <location filename="../designer/MainWindow.ui" line="1640"/>
+        <location filename="../designer/MainWindow.ui" line="1643"/>
         <source>Text Font</source>
         <translation type="unfinished">Textschriftart</translation>
     </message>
     <message>
         <location filename="../designer/MainWindow.ui" line="969"/>
-        <location filename="../designer/MainWindow.ui" line="1476"/>
+        <location filename="../designer/MainWindow.ui" line="1479"/>
         <source>overstrike</source>
         <translation type="unfinished">durchstrichen</translation>
     </message>
@@ -105,14 +102,33 @@
         <translation type="unfinished">Textfarbe</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1032"/>
         <source>Text Size</source>
+        <translation type="obsolete">Textgrösse</translation>
+    </message>
+    <message>
+        <location filename="../designer/MainWindow.ui" line="510"/>
+        <source>name color</source>
+        <translation type="unfinished">Namenfarbe</translation>
+    </message>
+    <message>
+        <location filename="../designer/MainWindow.ui" line="679"/>
+        <source>add tag</source>
+        <translation type="unfinished">Tag hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../designer/MainWindow.ui" line="1032"/>
+        <source>text size</source>
         <translation type="unfinished">Textgrösse</translation>
     </message>
     <message>
         <location filename="../designer/MainWindow.ui" line="1054"/>
         <source>background color</source>
         <translation type="unfinished">Hintergrundfarbe</translation>
+    </message>
+    <message>
+        <location filename="../designer/MainWindow.ui" line="1082"/>
+        <source>text font</source>
+        <translation type="unfinished">Schriftart</translation>
     </message>
     <message>
         <location filename="../designer/MainWindow.ui" line="1094"/>
@@ -151,39 +167,49 @@
         <translation type="unfinished">Linienfarbe</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1378"/>
+        <location filename="../designer/MainWindow.ui" line="1372"/>
+        <source>one-click line</source>
+        <translation type="unfinished">Ein-Klick Linie</translation>
+    </message>
+    <message>
+        <location filename="../designer/MainWindow.ui" line="1381"/>
         <source>One-Click Line</source>
         <translation type="unfinished">Ein-Klick Linie</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1393"/>
+        <location filename="../designer/MainWindow.ui" line="1396"/>
         <source>fill color</source>
         <translation type="unfinished">Füllfarbe</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1421"/>
+        <location filename="../designer/MainWindow.ui" line="1424"/>
         <source>outline size</source>
         <translation type="unfinished">Aussenliniengrösse</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1446"/>
+        <location filename="../designer/MainWindow.ui" line="1449"/>
         <source>outline color</source>
         <translation type="unfinished">Aussenlinienfarbe</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1702"/>
+        <location filename="../designer/MainWindow.ui" line="1705"/>
         <source>ellipse</source>
         <translation type="unfinished">Ellipse</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2000"/>
+        <location filename="../designer/MainWindow.ui" line="2003"/>
         <source>undo</source>
         <translation type="unfinished">Rückgängig machen</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2148"/>
+        <location filename="../designer/MainWindow.ui" line="2151"/>
         <source>tag</source>
         <translation type="unfinished">Tag</translation>
+    </message>
+    <message>
+        <location filename="../designer/MainWindow.ui" line="2322"/>
+        <source>settings</source>
+        <translation type="unfinished">Einstellungen</translation>
     </message>
     <message>
         <source>Line Size</source>
@@ -202,7 +228,7 @@
         <translation type="obsolete">Aussenlinienfarbe</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1661"/>
+        <location filename="../designer/MainWindow.ui" line="1664"/>
         <source>rectangle</source>
         <translation type="unfinished">Rechteck</translation>
     </message>
@@ -211,55 +237,55 @@
         <translation type="obsolete">Oval</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1743"/>
+        <location filename="../designer/MainWindow.ui" line="1746"/>
         <source>polygon</source>
         <translation type="unfinished">Polygon</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1784"/>
+        <location filename="../designer/MainWindow.ui" line="1787"/>
         <source>export</source>
         <translation type="unfinished">exportieren</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="1825"/>
+        <location filename="../designer/MainWindow.ui" line="1828"/>
         <source>image</source>
         <translation type="unfinished">Bild</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2034"/>
+        <location filename="../designer/MainWindow.ui" line="2037"/>
         <source>Search</source>
         <translation type="unfinished">Suchen</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2067"/>
-        <location filename="../designer/MainWindow.ui" line="2076"/>
+        <location filename="../designer/MainWindow.ui" line="2070"/>
+        <location filename="../designer/MainWindow.ui" line="2079"/>
         <source>Case Sensitive</source>
         <translation type="unfinished">Gross -/ Kleinschreibung beachten</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2089"/>
-        <location filename="../designer/MainWindow.ui" line="2098"/>
+        <location filename="../designer/MainWindow.ui" line="2092"/>
+        <location filename="../designer/MainWindow.ui" line="2101"/>
         <source>Regex</source>
         <translation type="unfinished">Regex</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2111"/>
+        <location filename="../designer/MainWindow.ui" line="2114"/>
         <source>category</source>
         <translation type="unfinished">Kategorie</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2120"/>
-        <location filename="../designer/MainWindow.ui" line="2124"/>
+        <location filename="../designer/MainWindow.ui" line="2123"/>
+        <location filename="../designer/MainWindow.ui" line="2127"/>
         <source>name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2129"/>
+        <location filename="../designer/MainWindow.ui" line="2132"/>
         <source>text</source>
         <translation type="unfinished">Text</translation>
     </message>
     <message>
-        <location filename="../designer/MainWindow.ui" line="2134"/>
+        <location filename="../designer/MainWindow.ui" line="2137"/>
         <source>all</source>
         <translation type="unfinished">Alles</translation>
     </message>

@@ -381,7 +381,7 @@ QToolTip {
      <string notr="true">border-width:0px; border-radius:7px</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="general_tab">
      <attribute name="title">
@@ -507,7 +507,7 @@ QToolTip {
        </rect>
       </property>
       <property name="toolTip">
-       <string>Name Color</string>
+       <string>name color</string>
       </property>
       <property name="toolTipDuration">
        <number>-5</number>
@@ -676,7 +676,7 @@ QToolTip {
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;create new&lt;/p&gt;&lt;p&gt;press &amp;quot;Shift&amp;quot; to create a sub entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>add tag</string>
       </property>
       <property name="toolTipDuration">
        <number>-5</number>
@@ -1029,7 +1029,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </rect>
       </property>
       <property name="toolTip">
-       <string>Text Size</string>
+       <string>text size</string>
       </property>
       <property name="toolTipDuration">
        <number>-5</number>
@@ -1079,7 +1079,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </rect>
       </property>
       <property name="toolTip">
-       <string>Text Font</string>
+       <string>text font</string>
       </property>
       <property name="toolTipDuration">
        <number>-5</number>
@@ -1275,7 +1275,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 }</string>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="empty_settings"/>
       <widget class="QWidget" name="eraser_settings">
@@ -1367,6 +1367,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <width>121</width>
           <height>31</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>one-click line</string>
         </property>
         <property name="toolTipDuration">
          <number>-5</number>
@@ -2314,6 +2317,9 @@ QAbstractItemView::corner {
       <width>31</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>settings</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border-width:0px; border-radius: 12px; background-color: rgba(255, 255, 255, 200);</string>
