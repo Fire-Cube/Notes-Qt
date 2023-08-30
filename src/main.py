@@ -628,10 +628,10 @@ class MainWindow(QMainWindow):
             
             self.ui.text_entry.setHtml(EMPTY_HTML)
 
-            self.set_color_button_color(self.ui.text_background_color_button, "white")
-            self.set_color_button_color(self.ui.text_foreground_color_button, "white")
+            self.set_color_button_color(self.ui.text_tab_background_color_button, "white")
+            self.set_color_button_color(self.ui.text_tab_foreground_color_button, "white")
             
-            self.ui.size_spinbox.setValue(0)
+            self.ui.text_tab_size_spinbox.setValue(0)
 
 
     def load_paint_tab(self) -> None:
@@ -678,7 +678,7 @@ class MainWindow(QMainWindow):
 
 
         else:
-            self.enable_widgets(
+            self.disable_widgets(
                 [
                         self.ui.paint_tab_clear_button,
                         self.ui.paint_tab_enable_selector_button,
@@ -846,7 +846,8 @@ class MainWindow(QMainWindow):
 
         self.load_entries()
         self.load_hierarchical_view()
-        self.load_entry()
+        with DontUpdateText(self):
+            self.load_entry()
 
     def on_color_button_clicked(self, button: QPushButton, function: Callable, transparency: bool = False) -> None:
         color_dialog = QColorDialog()
@@ -1409,11 +1410,10 @@ class MainWindow(QMainWindow):
 
 
     def text_tab_on_text_selection_changed(self) -> None:
-        if self.ui.text_entry.fontWeight() == QFont.Normal:
-            self.set_button_status(self.ui.text_tab_bold_button, "bold", False)
-
-        else:
-            self.set_button_status(self.ui.text_tab_bold_button, "bold", True)
+        self.set_button_status(self.ui.text_tab_bold_button, "bold", not self.ui.text_entry.fontWeight() == QFont.Normal)
+        self.set_button_status(self.ui.text_tab_italic_button, "italic", self.ui.text_entry.fontItalic())
+        self.set_button_status(self.ui.text_tab_underline_button, "underline", self.ui.text_entry.fontUnderline())
+        self.set_button_status(self.ui.text_tab_overstrike_button, "overstrike", self.ui.text_entry.currentFont().strikeOut())
 
         self.set_color_button_color(self.ui.text_tab_background_color_button, "white" if self.ui.text_entry.textBackgroundColor().alpha() == 0 else self.ui.text_entry.textBackgroundColor().name())
         self.set_color_button_color(self.ui.text_tab_foreground_color_button, self.ui.text_entry.textColor().name())
