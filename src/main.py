@@ -499,11 +499,12 @@ class MainWindow(QMainWindow):
     def load_specific_entry(self, iid) -> None:
         self.iid = iid
         self.load_entry()
-        for item in self.iterate_over_treeview(self.hierarchical_view_model.invisibleRootItem()):
-            if item.data(SELECTION_ROLE):
-                item.setData(False, SELECTION_ROLE)
-            
-        self.hierarchical_view_model.setData(self.get_model_index_by_id(iid), True, SELECTION_ROLE)
+        if self.entries.id_exists(iid):
+            for item in self.iterate_over_treeview(self.hierarchical_view_model.invisibleRootItem()):
+                if item.data(SELECTION_ROLE):
+                    item.setData(False, SELECTION_ROLE)
+                
+            self.hierarchical_view_model.setData(self.get_model_index_by_id(iid), True, SELECTION_ROLE)
 
         self.ui.MainTabManager.setCurrentIndex(0)
 
@@ -520,9 +521,7 @@ class MainWindow(QMainWindow):
                     [
                         self.ui.name_entry,
                         self.ui.name_color_button,
-                        self.ui.insert_entry_button,
                         self.ui.delete_entry_button,
-                        self.ui.insert_tag_button
                     ]
                 )
 
@@ -571,9 +570,7 @@ class MainWindow(QMainWindow):
                 [
                     self.ui.name_entry,
                     self.ui.name_color_button,
-                    self.ui.insert_entry_button,
                     self.ui.delete_entry_button,
-                    self.ui.insert_tag_button
                 ]
             )
 
@@ -664,6 +661,7 @@ class MainWindow(QMainWindow):
                 self.ui.text_entry.setEnabled(True)
                 self.enable_widgets(
                     [
+                        self.ui.paint_graphicsview,
                         self.ui.paint_tab_clear_button,
                         self.ui.paint_tab_enable_selector_button,
                         self.ui.paint_tab_enable_pen_button,
@@ -687,6 +685,7 @@ class MainWindow(QMainWindow):
         else:
             self.disable_widgets(
                 [
+                        self.ui.paint_graphicsview,
                         self.ui.paint_tab_clear_button,
                         self.ui.paint_tab_enable_selector_button,
                         self.ui.paint_tab_enable_pen_button,
@@ -794,7 +793,7 @@ class MainWindow(QMainWindow):
     def hierarchical_view_on_treeview_selection_changed(self) -> None:
         index = self.ui.HierarchicalView.selectedIndexes()[0]
 
-        for item in self.hierarchical_view_model.intern.values():
+        for item in self.iterate_over_treeview(self.hierarchical_view_model.invisibleRootItem()):
             item.setData(False, SELECTION_ROLE)
 
         self.hierarchical_view_model.itemFromIndex(index).setData(True, SELECTION_ROLE)
@@ -821,21 +820,22 @@ class MainWindow(QMainWindow):
     def general_tab_on_insert_entry_button_clicked(self) -> None:
         new_entry = deepcopy(ENTRY_TEMPLATE)
 
-        new_entry["id"] = self.get_next_free_id(self.get_used_entry_ids())
+        if self.entries.id_exists(self.iid):
+            new_entry["id"] = self.get_next_free_id(self.get_used_entry_ids())
 
-        parent_id = self.entries.get_parent(self.iid)
-        new_entry["parent"] = self.iid if self.if_shift_pressed else parent_id
+            parent_id = self.entries.get_parent(self.iid)
+            new_entry["parent"] = self.iid if self.if_shift_pressed else parent_id
 
-        if self.if_shift_pressed:
-            self.entries.set_is_open(self.iid, True)
-        
-        new_entry["position"] = self.entries.get_position(self.iid) + 1
-        for iid in self.get_children_entry(self.entries.get_parent(self.iid)):
-            position = self.entries.get_position(iid)
-            if position >= new_entry["position"]:
-                self.entries.set_position(iid, position + 1)
+            if self.if_shift_pressed:
+                self.entries.set_is_open(self.iid, True)
+            
+            new_entry["position"] = self.entries.get_position(self.iid) + 1
+            for iid in self.get_children_entry(self.entries.get_parent(self.iid)):
+                position = self.entries.get_position(iid)
+                if position >= new_entry["position"]:
+                    self.entries.set_position(iid, position + 1)
 
-        new_entry["times"]["creation_time"], new_entry["times"]["modification_time"] = (get_actual_time(),) * 2
+            new_entry["times"]["creation_time"], new_entry["times"]["modification_time"] = (get_actual_time(),) * 2
 
         self.entries.append(new_entry)
         self.entries.save()
