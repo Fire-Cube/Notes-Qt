@@ -1507,7 +1507,6 @@ class MainWindow(QMainWindow):
 
 
     def search_tab_update_search(self) -> None:
-        tags = [tag for entry in self.entries for tag in entry["tags"]]
         names = [entry["name"]["text"] for entry in self.entries]
         ids = [entry["id"] for entry in self.entries]
 
