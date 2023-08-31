@@ -1659,6 +1659,7 @@ def main() -> None:
         MySingleton = SingleInstance()
 
     except SingleInstanceException:
+        log("one is instance is already running\nexit")
         return # break the function to exit
     
     if "ddos" in sys.argv:
