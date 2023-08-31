@@ -123,6 +123,7 @@ class StyledItemDelegate(QStyledItemDelegate):
         )
         return editor
 
+
 class StandardItem(QStandardItem):
     def __init__(self, update_text_function: Callable[[str, str], None], *args) -> None:
         super().__init__(*args)
@@ -430,7 +431,7 @@ class MainWindow(QMainWindow):
 
         self.load_hierarchical_view()
 
-        self.load_entry()
+        self.load_specific_entry(self.iid)
         self.load_search_tab()
 
         self.update_background()
@@ -498,6 +499,12 @@ class MainWindow(QMainWindow):
     def load_specific_entry(self, iid) -> None:
         self.iid = iid
         self.load_entry()
+        for item in self.iterate_over_treeview(self.hierarchical_view_model.invisibleRootItem()):
+            if item.data(SELECTION_ROLE):
+                item.setData(False, SELECTION_ROLE)
+            
+        self.hierarchical_view_model.setData(self.get_model_index_by_id(iid), True, SELECTION_ROLE)
+
         self.ui.MainTabManager.setCurrentIndex(0)
 
 
@@ -1575,22 +1582,22 @@ class MainWindow(QMainWindow):
             self.search_layout.addWidget(result_button)
 
 
-    def iterate_over_treeview(self, model: QStandardItemModel) -> QStandardItem:
-        def recurse(parent: QStandardItem) -> QStandardItem:
+    def iterate_over_treeview(self, parent: QStandardItem) -> QStandardItem:
+        def recurse(parent: QStandardItem):
             for row in range(parent.rowCount()):
                 for column in range(parent.columnCount()):
-                    child = parent.item(row, column)
+                    child = parent.child(row, column)
                     yield child
+
                     if child.hasChildren():
                         yield from recurse(child)
 
-
-        if model is not None:
-            yield from recurse(model)
+        if parent is not None:
+            yield from recurse(parent)
 
 
     def get_model_index_by_id(self, iid: str) -> QModelIndex:
-        for item in self.iterate_over_treeview(self.hierarchical_view_model):
+        for item in self.iterate_over_treeview(self.hierarchical_view_model.invisibleRootItem()):
             if item.data(ID_ROLE) == iid:
                 return item.index()
 
