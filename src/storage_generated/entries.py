@@ -765,7 +765,6 @@ class Entries(list):
                 if not self.id_exists(entry["parent"]) and not entry["parent"] == "0":
                     is_clean = False
                     self.delete_entry(entry["id"])
-                    print(entry["id"])
 
 
     def id_exists(self, iid: str) -> bool:
