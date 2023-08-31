@@ -48,9 +48,9 @@ from BlurWindow.blurWindow import blur
 
 from constants import *
 from random_id import IDGenerator
-from special_logging import LOG_HIERARCHICAL_VIEW_UPDATES, LOG_CHOOSEN_COLOR, LOG_PROFILING, LOG_UNDO_ACTION, log
+from special_logging import LOG_HIERARCHICAL_VIEW_UPDATES, LOG_CHOOSEN_COLOR, LOG_PROFILING, LOG_UNDO_ACTION, LOG_FATAL_ERROR, log
 
-from storage.helpers import delete_data, prepare_first_run
+from storage.helpers import delete_data, prepare_first_run, check_if_data_is_valid
 from storage.images import Registry, get_hash_from_image, get_image, import_image
 from storage.paint import create_new_paint, delete_paint, load_paint, save_paint
 from storage.painting_nodes import EllipseNode, ImageNode, LineNode, PolygonNode, PointNode, RectangleNode
@@ -1667,6 +1667,10 @@ def main() -> None:
     if not Path("data").is_dir():
         prepare_first_run()
 
+    if not check_if_data_is_valid():
+        log("data is invalid\nexit", LOG_FATAL_ERROR)
+        return 
+
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
@@ -1678,6 +1682,7 @@ def main() -> None:
     window.show()
 
     app.exec()
+
 
 if __name__ == "__main__":
     if "profile" in sys.argv:
