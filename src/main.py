@@ -1167,9 +1167,9 @@ class MainWindow(QMainWindow):
                             self.paint_tab_start_coordinates,
                             self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toTuple()
                         ],
-                        False,
                         self.entries.get_shape_outline_size(self.iid),
                         self.entries.get_shape_outline_color(self.iid),
+                        False,
                     )
 
                     self.paint_tab_actual_object_id = new_id
