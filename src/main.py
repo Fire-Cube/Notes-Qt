@@ -1330,7 +1330,8 @@ class MainWindow(QMainWindow):
                     elif isinstance(node, PointNode):
                         position_difference = (self.selected_item.pos() - self.selected_item_start_position).toTuple()
                         node.coordinate = (node.coordinate[0] + position_difference[0], node.coordinate[1] + position_difference[1])
-                        save_paint(self.iid, self.paint_data)
+                    
+                    save_paint(self.iid, self.paint_data)
 
         self.paint_tab_update_history()
 
