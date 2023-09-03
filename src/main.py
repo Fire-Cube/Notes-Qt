@@ -359,11 +359,11 @@ class MainWindow(QMainWindow):
         self.ui.paint_tab_enable_polygon_button.clicked.connect(partial(self.paint_tab_enable_paint_mode, self.ui.paint_tab_enable_polygon_button, "polygon"))
         self.ui.paint_tab_enable_image_button.clicked.connect(partial(self.paint_tab_enable_paint_mode, self.ui.paint_tab_enable_image_button, "image"))
 
-        self.ui.paint_tab_line_settings_color_button.clicked.connect(partial(self.on_color_button_clicked, self.ui.paint_tab_line_settings_color_button, self.paint_tab_line_settings_color_function))
+        self.ui.paint_tab_line_settings_color_button.clicked.connect(partial(self.on_color_button_clicked, self.ui.paint_tab_line_settings_color_button, self.paint_tab_line_settings_color_function, True))
         self.ui.paint_tab_line_settings_one_click_line_checkbutton.stateChanged.connect(self.paint_tab_on_one_click_line_mode_changed)
 
-        self.ui.paint_tab_shape_settings_fill_color_button.clicked.connect(partial(self.on_color_button_clicked, self.ui.paint_tab_shape_settings_fill_color_button, self.paint_tab_shape_settings_fill_color_function))
-        self.ui.paint_tab_shape_settings_outline_color_button.clicked.connect(partial(self.on_color_button_clicked, self.ui.paint_tab_shape_settings_outline_color_button, self.paint_tab_shape_settings_outline_color_function))
+        self.ui.paint_tab_shape_settings_fill_color_button.clicked.connect(partial(self.on_color_button_clicked, self.ui.paint_tab_shape_settings_fill_color_button, self.paint_tab_shape_settings_fill_color_function, True))
+        self.ui.paint_tab_shape_settings_outline_color_button.clicked.connect(partial(self.on_color_button_clicked, self.ui.paint_tab_shape_settings_outline_color_button, self.paint_tab_shape_settings_outline_color_function, True))
 
         self.ui.paint_tab_line_settings_size_spinbox.valueChanged.connect(self.paint_tab_on_line_size_changed)
         self.ui.paint_tab_shape_settings_outline_size_spinbox.valueChanged.connect(self.paint_tab_on_outline_size_changed)
@@ -869,15 +869,15 @@ class MainWindow(QMainWindow):
         else:
              color = color_dialog.getColor(color, options=QColorDialog.DontUseNativeDialog)
 
-        log(f"choosen color {color.name()} by {button.objectName()}", LOG_CHOOSEN_COLOR)
+        log(f"choosen color {color.name(QColor.HexArgb)} by {button.objectName()}", LOG_CHOOSEN_COLOR)
 
         # update color in UI
         if color.isValid(): # check if color was set
-            self.set_color_button_color(button, color.name())
+            self.set_color_button_color(button, color.name(QColor.HexArgb))
             function(color)
 
         # save all custom colors to settings
-        colors = [color_dialog.customColor(i).name() for i in range(15)]
+        colors = [color_dialog.customColor(i).name(QColor.HexArgb) for i in range(15)]
         self.settings.set_color_chooser_custom_colors(colors)
 
 
@@ -1380,15 +1380,15 @@ class MainWindow(QMainWindow):
 
 
     def paint_tab_line_settings_color_function(self, color: QColor) -> None:
-        self.entries.set_line_color(self.iid, color.name())
+        self.entries.set_line_color(self.iid, color.name(QColor.HexArgb))
 
     
     def paint_tab_shape_settings_fill_color_function(self, color: QColor) -> None:
-        self.entries.set_shape_fill_color(self.iid, color.name())
+        self.entries.set_shape_fill_color(self.iid, color.name(QColor.HexArgb))
 
 
     def paint_tab_shape_settings_outline_color_function(self, color: QColor) -> None:
-        self.entries.set_shape_outline_color(self.iid, color.name())
+        self.entries.set_shape_outline_color(self.iid, color.name(QColor.HexArgb))
 
 
     def general_tab_on_name_text_edited(self) -> None:
