@@ -23,7 +23,7 @@ def check_if_data_is_valid() -> bool:
                 orjson.loads(input_file.read())
 
         except Exception as exception:
-            log(f"{path.relative_to(DATA_DIR_PATH)} is invalid. Error in line {exception.lineno} position {exception.pos}", LOG_INVALID_FILE)
+            log(f"File {path.relative_to(DATA_DIR_PATH)} is invalid. Error in line {exception.lineno} position {exception.pos}.", LOG_INVALID_FILE)
             errors += 1
         
         counter += 1

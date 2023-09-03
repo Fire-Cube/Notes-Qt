@@ -39,7 +39,7 @@ class Entries(list):
 
     def set_{{ method_name }}(self, iid: str, data: {{ get_function_type_hint(data_type) }}) -> None:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches
-        log("value of {{ method_name }} changed", LOG_ENTRY_CHANGES)
+        log("Value of {{ method_name }} changed.", LOG_ENTRY_CHANGES)
         
         if not isinstance(iid, str):
             raise TypeError(f"ID: '{iid!r}' has to be 'str' not {type(iid)}")
@@ -90,7 +90,6 @@ class Entries(list):
                 if not self.id_exists(entry["parent"]) and not entry["parent"] == "0":
                     is_clean = False
                     self.delete_entry(entry["id"])
-                    print(entry["id"])
 
 
     def id_exists(self, iid: str) -> bool:

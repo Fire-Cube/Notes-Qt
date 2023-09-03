@@ -718,7 +718,7 @@ class MainWindow(QMainWindow):
         """
         load the entry with ID [self.iid] to HierarchicalView
         """
-        log("reloaded hierarchical view", LOG_HIERARCHICAL_VIEW_UPDATES)
+        log("Reloaded hierarchical view.", LOG_HIERARCHICAL_VIEW_UPDATES)
 
         self.dont_save_expanded_status = True
 
@@ -869,7 +869,7 @@ class MainWindow(QMainWindow):
         else:
              color = color_dialog.getColor(color, options=QColorDialog.DontUseNativeDialog)
 
-        log(f"choosen color {color.name(QColor.HexArgb)} by {button.objectName()}", LOG_CHOOSEN_COLOR)
+        log(f"Choosen color {color.name(QColor.HexArgb)} by {button.objectName()}.", LOG_CHOOSEN_COLOR)
 
         # update color in UI
         if color.isValid(): # check if color was set
@@ -979,7 +979,7 @@ class MainWindow(QMainWindow):
     def paint_tab_on_undo_button_clicked(self) -> None:
         if self.paint_tab_history:
             action = list(self.paint_tab_history[0])[0]
-            log(f'undo action "{action[0]} {action[2][0][1].__class__} with ID {action[2][0][0]}"', LOG_UNDO_ACTION)
+            log(f'Undo action "{action[0]} {action[2][0][1].__class__} with ID {action[2][0][0]}".', LOG_UNDO_ACTION)
 
             self.last_paint_data = deepcopy(self.paint_data)
             self.paint_data = dictdiffer.revert(self.paint_tab_history[-1], self.paint_data)
@@ -1672,7 +1672,7 @@ def main() -> None:
         MySingleton = SingleInstance()
 
     except SingleInstanceException:
-        log("one is instance is already running\nexit")
+        log("One instance is already running.\nExit")
         return # break the function to exit
     
     if "ddos" in sys.argv:
@@ -1700,12 +1700,12 @@ def main() -> None:
 
 if __name__ == "__main__":
     if "profile" in sys.argv:
-        log("profiling", LOG_PROFILING)
+        log("Started profiling...", LOG_PROFILING)
         pr = cProfile.Profile()
         pr.enable()
         main()
         pr.disable()
-        log("profiling finished", LOG_PROFILING)
+        log("Profiling finished.", LOG_PROFILING)
         pr.dump_stats("stats")
 
     else:
