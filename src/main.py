@@ -1232,11 +1232,17 @@ class MainWindow(QMainWindow):
                         self.paint_tab_actual_object_id = new_id
                         self.paint_tab_only_pressed = False
 
-                    else:
-                        self.paint_data[self.paint_tab_actual_object_id].coordinates.append(self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toTuple())
-                        self.paint_graphicsscene.removeItem(self.paint_tab_actual_item)
+                        self.paint_tab_paint_line(self.paint_data[self.paint_tab_actual_object_id])
 
-                    self.paint_tab_paint_line(self.paint_data[self.paint_tab_actual_object_id])
+                    else:
+                        point = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toTuple()
+
+                        self.paint_data[self.paint_tab_actual_object_id].coordinates.append(point)
+
+                        path = self.paint_tab_actual_item.path()
+                        path.quadTo(*[QPointF(*point)] * 2)
+
+                        self.paint_tab_actual_item.setPath(path)
 
             case "eraser":
                 if self.paint_tab_only_pressed:
