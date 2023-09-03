@@ -951,9 +951,9 @@ class MainWindow(QMainWindow):
             LineNode(
                 [
                     (1, 1),
-                    (10, 10),
+                    (2, 2),
                 ],
-                20,
+                1,
                 "white",
                 True
             )
