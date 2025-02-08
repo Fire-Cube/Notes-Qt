@@ -8,7 +8,7 @@
 # compile settings
 # nuitka-project: --onefile
 # nuitka-project: --lto=yes
-# nuitka-project: --jobs=12
+# nuitka-project: --jobs=24
 # nuitka-project: --plugin-enable=pyside6
 # nuitka-project: --prefer-source-code
 # nuitka-project: --follow-stdlib
@@ -37,10 +37,11 @@ from typing import Callable
 
 import dictdiffer
 
-from PySide6.QtCore import SIGNAL, QEvent, QMargins, QModelIndex, QObject, QPoint, QPointF, QRect, Qt, QTranslator
+from PySide6.QtCore import SIGNAL, QEvent, QMargins, QModelIndex, QObject, QPoint, QPointF, QRect, QRectF, Qt, QTranslator, QSize
 from PySide6.QtGui import QBrush, QColor, QFont, QFontMetrics, QImage, QMouseEvent, QPainter, QPainterPath, QPen, QPixmap, QPolygon, QStandardItem, QStandardItemModel, QTextDocument
 from PySide6.QtSvg import QSvgGenerator
-from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsPixmapItem, QGraphicsEllipseItem, QGraphicsPolygonItem, QGraphicsPathItem, QGraphicsRectItem
+from PySide6.QtWidgets import QApplication, QColorDialog, QDialog, QFileDialog, QGraphicsScene, QHBoxLayout, QLineEdit, QMainWindow, QPushButton, QScrollArea, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QVBoxLayout, QWidget, QGraphicsPixmapItem, QGraphicsEllipseItem, QGraphicsPolygonItem, QGraphicsPathItem, QGraphicsRectItem, QRubberBand
+
 from tendo.singleton import SingleInstance, SingleInstanceException
 
 from BlurWindow.blurWindow import blur
@@ -66,11 +67,11 @@ from ui_generated.SettingsDialog import Ui_Dialog as UI_SettingsDialog
 ID_GENERATOR = IDGenerator()
 
 
-class EventFilter(QObject):
+class MainWindowEventFilter(QObject):
     def eventFilter(self, widget: QMainWindow, event: QEvent) -> False:  # sourcery skip: merge-nested-ifs
         if event.type() == KEY_RELEASE_EVENT:
             if event.key() in [UP_KEY, DOWN_KEY]:
-                widget.on_treeview_selection_changed()
+                widget.hierarchical_view_on_treeview_selection_changed()
 
             if event.key() == SHIFT_KEY:
                 widget.if_shift_pressed = False
@@ -82,7 +83,24 @@ class EventFilter(QObject):
             if event.key() == RETURN_KEY and widget.settings.get_active_tab() == 2 and widget.entries.get_activated_paint_mode(widget.iid) == "polygon":
                 widget.paint_tab_finish_polygon()
 
-        return False
+
+class GlobalEventFilter(QObject):
+    def __init__(self, parent) -> None:
+        super().__init__()
+        self.parent = parent
+
+    def eventFilter(self, object, event: QEvent):
+        if event.type() == QEvent.MouseButtonPress:
+            global_pos = event.globalPos()
+            view_rect = self.parent.ui.paint_graphicsview.rect()
+            view_top_left_global = self.parent.ui.paint_graphicsview.mapToGlobal(view_rect.topLeft())
+            view_rect_global = QRect(view_top_left_global, view_rect.size())
+            if not view_rect_global.contains(global_pos):
+                if self.parent.paint_tab_resizer_rubber_band is not None:
+                    self.parent.paint_tab_resizer_rubber_band.hide()
+                    self.parent.paint_tab_is_resizing = False
+
+        return super().eventFilter(self.parent, event)
 
 
 class StyledItemDelegate(QStyledItemDelegate):
@@ -262,12 +280,27 @@ class MainWindow(QMainWindow):
         self.empty_mode = False
 
         self.paint_tab_only_pressed = False # True if only pressed and not moved on paint_graphicsscene
-        self.paint_tab_is_polygon_unfinished = None
-        self.paint_tab_start_coordinates = None
-        self.paint_tab_actual_object_id = None
-        self.paint_tab_actual_item = None
-        self.paint_tab_history = []
+        self.paint_tab_is_polygon_unfinished = None  # bool or None: True if a polygon has been started but not yet finished.
+        self.paint_tab_start_coordinates = None        # QPoint or tuple: Starting coordinates of a drawing operation.
+        self.paint_tab_last_coordinates = None         # QPoint or tuple: The last known coordinates during the drawing operation.
+        self.paint_tab_actual_object_id = None         # str or int: Unique ID of the currently active object.
+        self.paint_tab_actual_item = None              # QGraphicsItem: The currently placed drawing item in the scene.
+        self.paint_tab_history = []                    # list: History of changes (e.g., for undo functionality).
+        self.paint_tab_resizer_rubber_band_start_position = None  # QPoint: The starting position of the resizer overlay.
+        self.paint_tab_is_resizing = False             # bool: True if a resizing operation is active, otherwise False.
 
+        self.paint_tab_resizer_rubber_band = QRubberBand(QRubberBand.Rectangle, self.ui.paint_graphicsview)
+
+        self.paint_tab_image_rect = None              # QRect: The original image rectangle in scene coordinates.
+        self.paint_tab_resize_offset = None           # QPoint: The offset between the mouse position and the grabbed corner (in scene coordinates).
+        self.paint_tab_original_pixmap = None         # QPixmap: The original image used for scaling.
+        self.paint_tab_grabbed_corner = None          # tuple: The grabbed corner (e.g., (x, y) in scene coordinates) when a handle is hit.
+        self.paint_tab_anchor = None                  # QPoint: The fixed, opposite corner (anchor) to the grabbed handle.
+        self.paint_tab_initial_size = None            # QSize: The original image size at the start of resizing.
+        self.paint_tab_initial_aspect = 1.0           # float: The original aspect ratio (width / height).
+        self.paint_tab_move_start_pos = None          # QPoint: The starting position of a move operation (in scene coordinates).
+        self.selected_item_relative_to_mouse_position = None  # QPoint: The offset between the mouse position and the image position in move mode.
+        
         self.dont_update_text = False
         self.dont_save_expanded_status = False
 
@@ -379,7 +412,6 @@ class MainWindow(QMainWindow):
         self.ui.paint_graphicsview.mouseMoveEvent = self.paint_tab_on_graphicsview_moved
         self.ui.paint_graphicsview.mouseReleaseEvent = self.paint_tab_on_graphicsview_released
 
-
         # Search Tab
         self.ui.search_scroll_area.setGeometry(
             QRect(
@@ -425,8 +457,11 @@ class MainWindow(QMainWindow):
         # Settings Button
         self.ui.settings_button.clicked.connect(self.show_settings_dialog)
 
-        self.eventFilter = EventFilter(parent=self)
+        self.eventFilter = MainWindowEventFilter(parent=self)
         self.installEventFilter(self.eventFilter)
+
+        self.global_event_filter = GlobalEventFilter(parent=self)
+        app.installEventFilter(self.global_event_filter)
 
         self.load_hierarchical_view()
 
@@ -979,7 +1014,17 @@ class MainWindow(QMainWindow):
     def paint_tab_on_undo_button_clicked(self) -> None:
         if self.paint_tab_history:
             action = list(self.paint_tab_history[0])[0]
-            log(f'Undo action "{action[0]} {action[2][0][1].__class__} with ID {action[2][0][0]}".', LOG_UNDO_ACTION)
+            change_item = action[2][0]
+            try:
+                key, value = change_item[0], change_item[1]
+                node_type = type(value).__name__
+                node_id = key
+
+            except Exception:
+                node_type = type(change_item).__name__
+                node_id = action[1]
+
+            log(f'Undo action "{action[0]} {node_type} with ID {node_id}".', LOG_UNDO_ACTION)
 
             self.last_paint_data = deepcopy(self.paint_data)
             self.paint_data = dictdiffer.revert(self.paint_tab_history[-1], self.paint_data)
@@ -1021,14 +1066,8 @@ class MainWindow(QMainWindow):
         brush.setStyle(Qt.SolidPattern)
         brush.setColor(QColor(node.fill_color))
 
-        if node.coordinates[1][1] > node.coordinates[0][1]:
-            top_left, bottom_right = QPoint(*node.coordinates[1]), QPoint(*node.coordinates[0])
-
-        else:
-            top_left, bottom_right = QPoint(*node.coordinates[0]), QPoint(*node.coordinates[1])
-
         path = QPainterPath()
-        path.addRoundedRect(QRect(top_left, bottom_right), 1, 1)
+        path.addRoundedRect(self.paint_tab_node_to_rect(node), 1, 1)
 
         self.paint_tab_actual_item = self.paint_graphicsscene.addPath(
             path,
@@ -1123,6 +1162,8 @@ class MainWindow(QMainWindow):
             )
         )
         
+        self.paint_data[self.paint_tab_actual_object_id].size = self.paint_tab_actual_item.pixmap().size().toTuple()
+
         self.paint_tab_actual_item.setPos(QPointF(*node.coordinate))
         self.paint_tab_actual_item.iid = copy(self.paint_tab_actual_object_id)
 
@@ -1132,6 +1173,7 @@ class MainWindow(QMainWindow):
 
         self.paint_tab_only_pressed = True
         self.paint_tab_start_coordinates = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toTuple()
+        self.paint_tab_last_coordinates = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toPoint()
 
         match self.entries.get_activated_paint_mode(self.iid):
             case "selector":
@@ -1140,6 +1182,66 @@ class MainWindow(QMainWindow):
                 if not self.selected_item is None:
                     self.selected_item_relative_to_mouse_position = self.selected_item.pos() - mouse_position
                     self.selected_item_start_position = self.selected_item.pos()
+
+                    node = self.paint_data[self.selected_item.iid]
+                
+                    if isinstance(node, ImageNode):
+                        image_rect = QRect(node.coordinate[0], node.coordinate[1], node.size[0], node.size[1])
+                        self.paint_tab_image_rect = image_rect
+
+                        topleft_view = self.ui.paint_graphicsview.mapFromScene(image_rect.topLeft())
+                        bottomright_view = self.ui.paint_graphicsview.mapFromScene(image_rect.bottomRight())
+
+                        view_rect = QRect(topleft_view, bottomright_view)
+                        self.paint_tab_resizer_rubber_band.setGeometry(view_rect)
+                        self.paint_tab_resizer_rubber_band.show()
+
+                        scene_position = self.ui.paint_graphicsview.mapToScene(event.pos()).toPoint()
+
+                        self.paint_tab_grabbed_corner = self.paint_tab_get_corner_from_rect_by_position(
+                            scene_position.x(),
+                            scene_position.y(),
+                            image_rect.x(),
+                            image_rect.y(),
+                            image_rect.width(),
+                            image_rect.height()
+                        )
+
+                        if self.paint_tab_grabbed_corner is not None:
+                            self.paint_tab_is_resizing = True
+
+                            # Determine the fixed anchor corner (opposite to the grabbed corner)
+                            x0, y0 = image_rect.x(), image_rect.y()
+                            w0, h0 = image_rect.width(), image_rect.height()
+
+                            if self.paint_tab_grabbed_corner == (x0, y0):
+                                self.paint_tab_anchor = QPoint(x0 + w0, y0 + h0)
+
+                            elif self.paint_tab_grabbed_corner == (x0 + w0, y0):
+                                self.paint_tab_anchor = QPoint(x0, y0 + h0)
+
+                            elif self.paint_tab_grabbed_corner == (x0, y0 + h0):
+                                self.paint_tab_anchor = QPoint(x0 + w0, y0)
+
+                            elif self.paint_tab_grabbed_corner == (x0 + w0, y0 + h0):
+                                self.paint_tab_anchor = QPoint(x0, y0)
+
+                            else:
+                                self.paint_tab_anchor = QPoint(x0, y0)
+
+                            self.paint_tab_initial_size = QSize(w0, h0)
+                            self.paint_tab_initial_aspect = w0 / h0
+
+                            grabbed_corner_scene = QPoint(*self.paint_tab_grabbed_corner)
+                            self.paint_tab_resize_offset = scene_position - grabbed_corner_scene
+
+                            raw_image, original_size = get_image(node.hash)
+                            self.paint_tab_original_pixmap = QPixmap.fromImage(QImage(raw_image, *original_size, QImage.Format_RGBA8888))
+
+                        else:
+                            self.paint_tab_is_resizing = False
+                            self.paint_tab_move_start_pos = scene_position
+                            self.selected_item_relative_to_mouse_position = self.selected_item.pos() - scene_position
 
             case "pen":
                 if self.entries.get_one_click_line_mode(self.iid):
@@ -1211,8 +1313,83 @@ class MainWindow(QMainWindow):
                         pass
 
                     else:
-                        mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
-                        self.selected_item.setPos(mouse_position + self.selected_item_relative_to_mouse_position)
+                        if not self.paint_tab_is_resizing:
+                            mouse_position = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple())
+                            self.selected_item.setPos(mouse_position + self.selected_item_relative_to_mouse_position)
+
+                            if isinstance(self.paint_data[self.selected_item.iid], ImageNode):
+                                new_rect = QRect(self.selected_item.pos().toPoint(), QSize(*self.paint_data[self.selected_item.iid].size))
+                                self.paint_tab_resizer_rubber_band.setGeometry(new_rect)
+
+                    
+                    if isinstance(node, ImageNode):
+                        if self.paint_tab_is_resizing:
+                            scene_position = self.ui.paint_graphicsview.mapToScene(event.pos()).toPoint()
+                            adjusted_point = scene_position - self.paint_tab_resize_offset
+
+                            raw_rect = QRect(self.paint_tab_anchor, adjusted_point).normalized()
+                            width = raw_rect.width()
+                            heigth = raw_rect.height()
+                            if heigth == 0:
+                                heigth = 1
+
+                            desired_aspect = self.paint_tab_initial_aspect
+                            if width / heigth > desired_aspect:
+                                new_width = int(heigth * desired_aspect)
+                                new_height = heigth
+
+                            else:
+                                new_width = width
+                                new_height = int(width / desired_aspect) if width > 0 else 1
+
+                            x0, y0 = self.paint_tab_image_rect.x(), self.paint_tab_image_rect.y()
+                            w0, h0 = self.paint_tab_initial_size.width(), self.paint_tab_initial_size.height()
+
+                            if self.paint_tab_anchor == QPoint(x0, y0):  # anchor top left
+                                new_rect = QRect(self.paint_tab_anchor, QSize(new_width, new_height))
+
+                            elif self.paint_tab_anchor == QPoint(x0 + w0, y0):  # anchor top right
+                                new_rect = QRect(QPoint(self.paint_tab_anchor.x() - new_width, self.paint_tab_anchor.y()), QSize(new_width, new_height))
+
+                            elif self.paint_tab_anchor == QPoint(x0, y0 + h0):  # anchor bottom left
+                                new_rect = QRect(QPoint(self.paint_tab_anchor.x(), self.paint_tab_anchor.y() - new_height), QSize(new_width, new_height))
+
+                            elif self.paint_tab_anchor == QPoint(x0 + w0, y0 + h0):  # anchor bottom right
+                                new_rect = QRect(QPoint(self.paint_tab_anchor.x() - new_width, self.paint_tab_anchor.y() - new_height), QSize(new_width, new_height))
+
+                            else:
+                                new_rect = QRect(self.paint_tab_anchor, QSize(new_width, new_height))
+
+                            new_rect = new_rect.normalized()
+
+                            node.coordinate = (new_rect.topLeft().x(), new_rect.topLeft().y())
+                            node.size = (new_rect.width(), new_rect.height())
+                            
+                            topleft_view = self.ui.paint_graphicsview.mapFromScene(new_rect.topLeft())
+                            bottomright_view = self.ui.paint_graphicsview.mapFromScene(new_rect.bottomRight())
+                            view_rect = QRect(topleft_view, bottomright_view)
+                            self.paint_tab_resizer_rubber_band.setGeometry(view_rect)
+                            
+                            if self.paint_tab_original_pixmap and not self.paint_tab_original_pixmap.isNull():
+                                scaled_pixmap = self.paint_tab_original_pixmap.scaled(new_rect.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+                                self.selected_item.setPixmap(scaled_pixmap)
+                                self.selected_item.setPos(new_rect.topLeft())
+
+                        else:
+                            mouse_position = self.ui.paint_graphicsview.mapToScene(event.pos()).toPoint()
+                            new_position = QPoint(
+                                mouse_position.x() + self.selected_item_relative_to_mouse_position.x(),
+                                mouse_position.y() + self.selected_item_relative_to_mouse_position.y()
+                            )
+
+                            self.selected_item.setPos(new_position)
+                            node.coordinate = (new_position.x(), new_position.y())
+
+                            topleft_view = self.ui.paint_graphicsview.mapFromScene(new_position)
+                            bottomright_view = self.ui.paint_graphicsview.mapFromScene(QPoint(new_position.x() + node.size[0], new_position.y() + node.size[1]))
+                            view_rect = QRect(topleft_view, bottomright_view)
+                            self.paint_tab_resizer_rubber_band.setGeometry(view_rect)
                         
             case "pen":
                 if not self.entries.get_one_click_line_mode(self.iid):
@@ -1313,8 +1490,12 @@ class MainWindow(QMainWindow):
 
                 self.paint_tab_paint_ellipse(self.paint_data[self.paint_tab_actual_object_id])
 
+        self.paint_tab_last_coordinates = self.ui.paint_graphicsview.mapToScene(*event.position().toTuple()).toPoint()
+
 
     def paint_tab_on_graphicsview_released(self, event: QMouseEvent) -> None:
+        self.paint_tab_last_coordinates = None
+
         match self.entries.get_activated_paint_mode(self.iid):
             case "pen" | "eraser" | "rectangle" | "ellipse":
                 save_paint(self.iid, self.paint_data)
@@ -1397,6 +1578,26 @@ class MainWindow(QMainWindow):
     def paint_tab_shape_settings_outline_color_function(self, color: QColor) -> None:
         self.entries.set_shape_outline_color(self.iid, color.name(QColor.HexArgb))
 
+
+    def paint_tab_node_to_rect(self, node) -> QRectF:
+        if node.coordinates[1][1] > node.coordinates[0][1]:
+            top_left, bottom_right = QPoint(*node.coordinates[1]), QPoint(*node.coordinates[0])
+
+        else:
+            top_left, bottom_right = QPoint(*node.coordinates[0]), QPoint(*node.coordinates[1])
+
+        return QRectF(top_left, bottom_right)
+
+
+    def paint_tab_get_corner_from_rect_by_position(self, x: int, y: int, rx: int, ry: int, rw: int, rh: int) -> tuple | None:
+        corners = [(rx, ry), (rx + rw, ry), (rx, ry + rh), (rx + rw, ry + rh)]
+        for corner in corners:
+            cx, cy = corner
+            if abs(x - cx) <= 5 and abs(y - cy) <= 5:
+                return corner
+            
+        return None
+    
 
     def general_tab_on_name_text_edited(self) -> None:
         if not self.dont_update_text: # prevent recursive calls
