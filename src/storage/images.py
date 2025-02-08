@@ -10,10 +10,6 @@ from storage.paths import IMAGES_DIR_PATH, IMAGES_REGISTRY_FILE_PATH
 
 BUFFER_SIZE = 64000
 
-def get_image(image_hash: str) -> Image:
-    get_cache_path(image_hash)
-
-
 def get_hash_from_image(path: Path) -> str:
     hasher = hashlib.sha512()
     with open(path, "rb") as file:
