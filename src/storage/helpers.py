@@ -19,7 +19,7 @@ def check_if_data_is_valid() -> bool:
     errors = 0
     for path in Path(DATA_DIR_PATH).rglob("*.json"):
         try:
-            with open(path) as input_file:
+            with open(path, encoding="utf-8") as input_file:
                 orjson.loads(input_file.read())
 
         except Exception as exception:
