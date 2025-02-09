@@ -4,6 +4,7 @@ Do not edit this directly
 """
 
 from copy import deepcopy
+from typing import Generator
 
 import orjson
 
@@ -81,7 +82,7 @@ class Entries(list):
         self.save()
 
 
-    def delete_entry_recursive(self, iid: str) -> None:
+    def delete_entry_recursive(self, iid: str) -> Generator[str, None, None]:
         self.delete_entry(iid)
         is_clean = False
         while not is_clean:
@@ -90,6 +91,7 @@ class Entries(list):
                 if not self.id_exists(entry["parent"]) and not entry["parent"] == "0":
                     is_clean = False
                     self.delete_entry(entry["id"])
+                    yield entry["id"]
 
 
     def id_exists(self, iid: str) -> bool:

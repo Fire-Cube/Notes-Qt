@@ -4,6 +4,7 @@ from dataclasses import fields as get_fields
 @dataclass
 class LineNode:
     coordinates: list[tuple[float, float]]
+    z_order: int
     size: float
     color: str
     is_eraser: bool
@@ -12,6 +13,7 @@ class LineNode:
 @dataclass
 class RectangleNode:
     coordinates: list[tuple[float, float]]
+    z_order: int
     outline_size: float
     outline_color: str
     fill_color: str
@@ -20,6 +22,7 @@ class RectangleNode:
 @dataclass
 class EllipseNode:
     coordinates: list[tuple[float, float]]
+    z_order: int
     outline_size: float
     outline_color: str
     fill_color: str
@@ -28,6 +31,7 @@ class EllipseNode:
 @dataclass
 class PointNode:
     coordinate: tuple[float, float]
+    z_order: int
     color: str
     size: float
 
@@ -35,6 +39,7 @@ class PointNode:
 @dataclass
 class PolygonNode:
     coordinates: list[tuple[float, float]]
+    z_order: int
     outline_size: float
     outline_color: str
     fill_color: str
@@ -43,6 +48,7 @@ class PolygonNode:
 @dataclass
 class ImageNode:
     coordinate: tuple[float, float]
+    z_order: int
     size: tuple[float, float]
     hash: str
 

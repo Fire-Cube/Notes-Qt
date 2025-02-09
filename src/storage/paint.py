@@ -12,15 +12,24 @@ def get_paint_path(iid: str) -> None:
     return Path(f"./data/paint/paint_{iid}.json")
 
 
+def _parse_paint_data(data: dict) -> dict:
+    return {
+        key: node_from_data(
+            getattr(painting_nodes, value["type"]), value["value"]
+        )
+        for key, value in data.items()
+    }
+
+
 def load_paint(iid: str) -> dict:
     with open(get_paint_path(iid), encoding="utf-8") as data_file:
         data = orjson.loads(data_file.read())
-        return {
-            key: node_from_data(
-                getattr(painting_nodes, value["type"]), value["value"]
-            )
-            for key, value in data.items()
-        }
+
+    return _parse_paint_data(data)
+
+
+def load_paint_raw(data) -> dict:
+    return _parse_paint_data(data)
 
 
 def save_paint(iid: str, paint: dict) -> None:
