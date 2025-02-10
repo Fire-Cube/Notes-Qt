@@ -39,10 +39,12 @@ def remove_image(image_hash: str) -> None:
     get_cache_path(f"{image_hash}_image").unlink()
     get_cache_path(f"{image_hash}_size").unlink()
 
+
 def get_image(image_hash: str) -> tuple[bytes, tuple[int, int]]:
     with lzma.open(f"{get_cache_path(image_hash)}_image", "rb") as image_file:
         with open(get_cache_path(f"{image_hash}_size"), "rb") as size_file:
             return image_file.read(), orjson.loads(size_file.read())
+
 
 class Registry:
     def __init__(self) -> None:
@@ -73,6 +75,7 @@ class Registry:
         for node in paint_data.values():
             if isinstance(node, ImageNode):
                 self.unregister_image_usage(node.hash, iid)
+
 
     def is_image_imported(self, path: Path) -> bool:
         return get_hash_from_image(path) in self.registry
