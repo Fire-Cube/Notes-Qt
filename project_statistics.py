@@ -23,6 +23,8 @@ ui_resources_generated = [
 
 python = [
     "storage/helpers.py",
+    "storage/migrations/__init__.py",
+    "storage/migrations/paint_add_z_order.py",
     "storage/images.py",
     "storage/paint.py",
     "storage/painting_nodes.py",
