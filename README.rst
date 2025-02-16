@@ -37,13 +37,13 @@ Start the application with:
 
 .. code-block:: bash
 
-    python main.py
+    python src/main.py
 
 You can also compile the application with Nuitka using the command:
 
 .. code-block:: bash
 
-    nuitka main.py
+    nuitka src/main.py
 
 
 Contributing
