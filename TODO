@@ -10,7 +10,7 @@ Text Tab:
   ☐ Style right click menu
 
 Paint Tab:
-  ☐ Deselect image when clicking on other object or canvas
+  ✔ Deselect image when clicking on other object or canvas @done(25-02-16 16:02)
 
 General:
   ☐ Support Darkmode

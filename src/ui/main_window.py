@@ -1061,6 +1061,9 @@ class MainWindow(QMainWindow):
                             self.paint_tab_move_start_pos = scene_position
                             self.selected_item_relative_to_mouse_position = self.selected_item.pos() - scene_position
 
+                    else:
+                        self.paint_tab_resizer_rubber_band.hide()
+
             case "pen":
                 if self.entries.get_one_click_line_mode(self.iid):
                     new_id = self.paint_tab_get_new_id()
