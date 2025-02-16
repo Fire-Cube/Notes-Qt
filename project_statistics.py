@@ -22,19 +22,24 @@ ui_resources_generated = [
 ]
 
 python = [
-    "storage/helpers.py",
     "storage/migrations/__init__.py",
     "storage/migrations/paint_add_z_order.py",
+    "storage/helpers.py",
     "storage/images.py",
     "storage/paint.py",
     "storage/painting_nodes.py",
     "storage/paths.py",
     "storage/templates.py",
+    "core/context_managers.py",
+    "core/event_filters.py",
+    "core/random_id.py",
+    "core/shared_functions.py",
+    "core/special_logging.py",
+    "ui/custom_objects.py",
+    "ui/custom_widgets.py",
+    "ui/dialogs.py",
+    "ui/main_window.py",
     "constants.py",
-    "random_id.py",
-    "custom_widgets.py",
-    "shared.py",
-    "special_logging.py",
     "main.py"
 ]
 
