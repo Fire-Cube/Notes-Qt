@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
 from functools import partial
-
+from pathlib import Path
 from re import fullmatch
 from typing import Callable, Generator
 
@@ -1524,7 +1524,14 @@ class MainWindow(QMainWindow):
         
 
     def general_tab_on_insert_tag_clicked(self) -> None:
-        self.entries.set_tags(self.iid, self.entries.get_tags(self.iid) + [AskTagDialog().tag_name])
+        tags = set([""])
+        for entry in self.entries:
+            tags.update(entry["tags"])
+
+        tag = AskTagDialog(tags).tag_name
+        if tag:
+            self.entries.set_tags(self.iid, self.entries.get_tags(self.iid) + [tag])
+
         self.load_general_tab()
         self.load_search_tab()
 

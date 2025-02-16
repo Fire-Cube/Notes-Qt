@@ -18,7 +18,8 @@ ui_generated = [
 
 ui_resources_generated = [
     "ui_generated/main_window_resources.py",
-    "ui_generated/settings_dialog_resources.py"
+    "ui_generated/settings_dialog_resources.py",
+    "ui_generated/ask_tag_dialog_resources.py"
 ]
 
 python = [

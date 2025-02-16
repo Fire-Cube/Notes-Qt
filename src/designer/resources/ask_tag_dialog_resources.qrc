@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="ui">
+    <file>icon.ico</file>
+    <file>ComboBox.png</file>
+  </qresource>
+</RCC>

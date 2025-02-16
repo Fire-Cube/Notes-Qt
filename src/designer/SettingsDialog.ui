@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Settings</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources/settings_dialog_resources.qrc">
+    <normaloff>:/ui/icon.ico</normaloff>:/ui/icon.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">/* QDialog */

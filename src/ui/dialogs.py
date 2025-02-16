@@ -2,7 +2,7 @@ from typing import Callable
 from functools import partial
 
 from PySide6.QtWidgets import QDialog
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QIcon
 from PySide6.QtCore import Qt
 
 from ui_generated.SettingsDialog import Ui_Dialog as UI_SettingsDialog
@@ -10,22 +10,56 @@ from ui_generated.AskTagDialog import Ui_Dialog as UI_AskTagDialog
 
 from storage_generated.settings import Settings
 
+from ui.custom_widgets import CustomLine
+
 class AskTagDialog(QDialog):
-    def __init__(self):
+    def __init__(self, tags: list[str]) -> None:
         super(AskTagDialog, self).__init__()
 
         self.ui = UI_AskTagDialog()
         self.ui.setupUi(self)
 
-        self.ui.tag_name_entry.textChanged.connect(self.on_tag_name_changed)
-        self.ui.submit_button.clicked.connect(self.close)
+        geometry = self.ui.line.geometry()
+
+        self.ui.line.hide()
+        self.ui.line2 = CustomLine(self)
+        self.ui.line2.setGeometry(geometry)
+
+        for tag in tags:
+            self.ui.tag_combobox.addItem(tag)
+
+        if self.ui.tag_combobox.itemText(0) == "":
+            self.ui.tag_combobox.removeItem(0)
+
+        self.ui.create_button.clicked.connect(self.on_create_button_clicked)
+        self.ui.create_select_button.clicked.connect(self.on_create_select_button_clicked)
+        self.ui.add_button.clicked.connect(self.on_add_button_clicked)
+
         self.tag_name = ""
 
         self.show()
         self.exec()
+        
 
-    def on_tag_name_changed(self) -> None:
-        self.tag_name = self.ui.tag_name_entry.text()
+    def on_create_button_clicked(self) -> None:
+        tag_name = self.ui.tag_name_entry.text()
+        if tag_name == "":
+            return
+        
+        if self.ui.tag_combobox.itemText(0) == "":
+            self.ui.tag_combobox.removeItem(0)
+
+        self.ui.tag_combobox.addItem(tag_name)
+
+
+    def on_create_select_button_clicked(self) -> None:
+        self.on_create_button_clicked()
+        self.ui.tag_combobox.setCurrentIndex(self.ui.tag_combobox.count() - 1)
+
+    
+    def on_add_button_clicked(self) -> None:
+        self.tag_name = self.ui.tag_combobox.currentText()
+        self.close()
         
 
 class SettingsDialog(QDialog):

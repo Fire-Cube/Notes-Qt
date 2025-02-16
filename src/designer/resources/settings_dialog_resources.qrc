@@ -11,6 +11,7 @@
     <file>3.png</file>
   </qresource>
   <qresource prefix="ui">
+    <file>icon.ico</file>
     <file>ComboBox.png</file>
     <file>CheckBox.png</file>
     <file>CheckBoxPressed.png</file>

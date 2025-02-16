@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>411</width>
-    <height>101</height>
+    <height>192</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Tags</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources/ask_tag_dialog_resources.qrc">
+    <normaloff>:/ui/icon.ico</normaloff>:/ui/icon.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">/* QPushButton */
@@ -37,6 +41,33 @@ QLineEdit:focus, QLineEdit:hover {
 QObject {
 	background-color: white;
 	color: black;
+}
+
+/* QComboBox */
+QComboBox {
+    background-color: rgba(255, 255, 255, 150);
+	border: 1px solid gainsboro;
+    border-radius: 3px;
+	selection-color: black;
+}
+
+QComboBox:focus, QComboBox:hover {
+	border-color: rgb(198, 198, 198);
+}
+
+QComboBox::drop-down {
+    border-radius: 3px;
+	background-color: transparent;
+}
+
+QComboBox::down-arrow {
+	image: url(:/ui/ComboBox.png);
+}
+
+QComboBox QAbstractItemView {
+	border: 1px solid gainsboro;
+    border-radius: 3px;
+	background-color: rgb(240, 240, 240);
 }</string>
   </property>
   <widget class="QLabel" name="label">
@@ -49,7 +80,7 @@ QObject {
     </rect>
    </property>
    <property name="text">
-    <string>Please enter a name for the new tag</string>
+    <string>Create new tag</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="tag_name_entry">
@@ -62,7 +93,7 @@ QObject {
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="submit_button">
+  <widget class="QPushButton" name="create_button">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -72,10 +103,74 @@ QObject {
     </rect>
    </property>
    <property name="text">
+    <string>create</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>301</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Select tag</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="create_select_button">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>60</y>
+     <width>91</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>create + select</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="tag_combobox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>121</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="add_button">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>75</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
     <string>add</string>
    </property>
   </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>380</width>
+     <height>1</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Orientation::Horizontal</enum>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources/ask_tag_dialog_resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
