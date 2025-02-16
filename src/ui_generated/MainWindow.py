@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1237, 795)
+        MainWindow.resize(1237, 767)
         MainWindow.setMaximumSize(QSize(1237, 795))
         icon = QIcon()
         icon.addFile(u":/icon/icon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
@@ -313,7 +313,12 @@ class Ui_MainWindow(object):
 "	background-color: white;\n"
 "	border-radius: 2px;\n"
 "	border-color: transparent;\n"
-"}")
+"}\n"
+"\n"
+"QObject {\n"
+"	color: black\n"
+""
+                        "}")
         MainWindow.setLocale(QLocale(QLocale.English, QLocale.Europe))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -323,11 +328,11 @@ class Ui_MainWindow(object):
         self.HierarchicalView.setGeometry(QRect(5, 7, 291, 781))
         self.HierarchicalView.setToolTipDuration(-5)
         self.HierarchicalView.setStyleSheet(u"")
-        self.HierarchicalView.setFrameShadow(QFrame.Plain)
+        self.HierarchicalView.setFrameShadow(QFrame.Shadow.Plain)
         self.HierarchicalView.setLineWidth(0)
-        self.HierarchicalView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.HierarchicalView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.HierarchicalView.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.HierarchicalView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.HierarchicalView.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.HierarchicalView.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         self.HierarchicalView.setDragEnabled(False)
         self.HierarchicalView.setAlternatingRowColors(False)
         self.HierarchicalView.setIndentation(20)
@@ -352,7 +357,7 @@ class Ui_MainWindow(object):
         self.name_entry.setFont(font)
         self.name_entry.setToolTipDuration(-5)
         self.name_entry.setStyleSheet(u"	background-color: rgba(255, 255, 255, 150);")
-        self.name_entry.setAlignment(Qt.AlignCenter)
+        self.name_entry.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.delete_entry_button = QPushButton(self.general_tab)
         self.delete_entry_button.setObjectName(u"delete_entry_button")
         self.delete_entry_button.setGeometry(QRect(820, 10, 50, 45))
@@ -405,7 +410,7 @@ class Ui_MainWindow(object):
         self.label.setStyleSheet(u"QWidget {\n"
 "	background-color: transparent;\n"
 "}")
-        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         self.label_2 = QLabel(self.general_tab)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(10, 80, 81, 16))
@@ -413,7 +418,7 @@ class Ui_MainWindow(object):
         self.label_2.setStyleSheet(u"QWidget {\n"
 "	background-color: transparent;\n"
 "}")
-        self.label_2.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.label_2.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         self.label_3 = QLabel(self.general_tab)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(10, 100, 101, 16))
@@ -421,7 +426,7 @@ class Ui_MainWindow(object):
         self.label_3.setStyleSheet(u"QWidget {\n"
 "	background-color: transparent;\n"
 "}")
-        self.label_3.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.label_3.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         self.id_label = QLabel(self.general_tab)
         self.id_label.setObjectName(u"id_label")
         self.id_label.setGeometry(QRect(140, 60, 49, 16))
@@ -573,9 +578,9 @@ class Ui_MainWindow(object):
 "QAbstractItemView::corner {\n"
 "	background-color: transparent;\n"
 "}")
-        self.text_entry.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.text_entry.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.text_entry.setLineWrapMode(QTextEdit.NoWrap)
+        self.text_entry.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.text_entry.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.text_entry.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
         self.text_entry.setHtml(u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -640,10 +645,10 @@ class Ui_MainWindow(object):
         self.text_tab_foreground_color_button.setIconSize(QSize(30, 30))
         self.text_tab_size_spinbox = QSpinBox(self.text_tab)
         self.text_tab_size_spinbox.setObjectName(u"text_tab_size_spinbox")
-        self.text_tab_size_spinbox.setGeometry(QRect(630, 17, 51, 31))
+        self.text_tab_size_spinbox.setGeometry(QRect(630, 17, 88, 31))
         self.text_tab_size_spinbox.setToolTipDuration(-5)
         self.text_tab_size_spinbox.setStyleSheet(u"	background-color: rgba(255, 255, 255, 150);")
-        self.text_tab_size_spinbox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
+        self.text_tab_size_spinbox.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
         self.text_tab_background_color_button = QPushButton(self.text_tab)
         self.text_tab_background_color_button.setObjectName(u"text_tab_background_color_button")
         self.text_tab_background_color_button.setGeometry(QRect(540, 10, 45, 45))
@@ -742,7 +747,7 @@ class Ui_MainWindow(object):
         self.eraser_settings.setObjectName(u"eraser_settings")
         self.paint_tab_eraser_settings_size_spinbox = QSpinBox(self.eraser_settings)
         self.paint_tab_eraser_settings_size_spinbox.setObjectName(u"paint_tab_eraser_settings_size_spinbox")
-        self.paint_tab_eraser_settings_size_spinbox.setGeometry(QRect(290, 17, 51, 31))
+        self.paint_tab_eraser_settings_size_spinbox.setGeometry(QRect(250, 17, 88, 31))
         self.paint_tab_eraser_settings_size_spinbox.setToolTipDuration(2)
         self.paint_tab_eraser_settings_size_spinbox.setStyleSheet(u"	background-color: rgba(255, 255, 255, 150);")
         self.paint_tab_eraser_settings_size_spinbox.setMinimum(1)
@@ -752,7 +757,7 @@ class Ui_MainWindow(object):
         self.line_settings.setObjectName(u"line_settings")
         self.paint_tab_line_settings_size_spinbox = QSpinBox(self.line_settings)
         self.paint_tab_line_settings_size_spinbox.setObjectName(u"paint_tab_line_settings_size_spinbox")
-        self.paint_tab_line_settings_size_spinbox.setGeometry(QRect(220, 17, 51, 31))
+        self.paint_tab_line_settings_size_spinbox.setGeometry(QRect(190, 17, 71, 31))
         self.paint_tab_line_settings_size_spinbox.setToolTipDuration(2)
         self.paint_tab_line_settings_size_spinbox.setStyleSheet(u"	background-color: rgba(255, 255, 255, 150);")
         self.paint_tab_line_settings_size_spinbox.setMinimum(1)
@@ -765,7 +770,7 @@ class Ui_MainWindow(object):
         self.paint_tab_line_settings_color_button.setIconSize(QSize(30, 30))
         self.paint_tab_line_settings_one_click_line_checkbutton = QCheckBox(self.line_settings)
         self.paint_tab_line_settings_one_click_line_checkbutton.setObjectName(u"paint_tab_line_settings_one_click_line_checkbutton")
-        self.paint_tab_line_settings_one_click_line_checkbutton.setGeometry(QRect(80, 17, 121, 31))
+        self.paint_tab_line_settings_one_click_line_checkbutton.setGeometry(QRect(50, 17, 121, 31))
         self.paint_tab_line_settings_one_click_line_checkbutton.setToolTipDuration(-5)
         self.paint_tab_line_settings_one_click_line_checkbutton.setStyleSheet(u"	background-color: rgba(255, 255, 255, 150);")
         self.stackedWidget.addWidget(self.line_settings)
@@ -779,7 +784,7 @@ class Ui_MainWindow(object):
         self.paint_tab_shape_settings_fill_color_button.setIconSize(QSize(30, 30))
         self.paint_tab_shape_settings_outline_size_spinbox = QSpinBox(self.shape_settings)
         self.paint_tab_shape_settings_outline_size_spinbox.setObjectName(u"paint_tab_shape_settings_outline_size_spinbox")
-        self.paint_tab_shape_settings_outline_size_spinbox.setGeometry(QRect(150, 17, 51, 31))
+        self.paint_tab_shape_settings_outline_size_spinbox.setGeometry(QRect(120, 17, 88, 31))
         self.paint_tab_shape_settings_outline_size_spinbox.setToolTipDuration(2)
         self.paint_tab_shape_settings_outline_size_spinbox.setStyleSheet(u"	background-color: rgba(255, 255, 255, 150);")
         self.paint_tab_shape_settings_outline_size_spinbox.setMinimum(1)
@@ -1061,13 +1066,17 @@ class Ui_MainWindow(object):
 "\n"
 "QAbstractItemView::corner {\n"
 "	background-color: transparent;\n"
+"}\n"
+"\n"
+"QGraphicsView {\n"
+"	background-color: white;\n"
 "}")
-        self.paint_graphicsview.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.paint_graphicsview.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.paint_graphicsview.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
-        self.paint_graphicsview.setRenderHints(QPainter.Antialiasing|QPainter.TextAntialiasing)
-        self.paint_graphicsview.setDragMode(QGraphicsView.NoDrag)
-        self.paint_graphicsview.setResizeAnchor(QGraphicsView.NoAnchor)
+        self.paint_graphicsview.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.paint_graphicsview.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.paint_graphicsview.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
+        self.paint_graphicsview.setRenderHints(QPainter.RenderHint.Antialiasing|QPainter.RenderHint.TextAntialiasing)
+        self.paint_graphicsview.setDragMode(QGraphicsView.DragMode.NoDrag)
+        self.paint_graphicsview.setResizeAnchor(QGraphicsView.ViewportAnchor.NoAnchor)
         self.paint_tab_undo_button = QPushButton(self.paint_tab)
         self.paint_tab_undo_button.setObjectName(u"paint_tab_undo_button")
         self.paint_tab_undo_button.setGeometry(QRect(810, 10, 50, 45))
@@ -1230,12 +1239,12 @@ class Ui_MainWindow(object):
 "QAbstractItemView::corner {\n"
 "	background-color: transparent;\n"
 "}")
-        self.search_scroll_area.setFrameShape(QFrame.NoFrame)
+        self.search_scroll_area.setFrameShape(QFrame.Shape.NoFrame)
         self.search_scroll_area.setLineWidth(1)
-        self.search_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.search_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.search_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.search_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.search_scroll_area.setWidgetResizable(True)
-        self.search_scroll_area.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.search_scroll_area.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
         self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 895, 665))
@@ -1253,15 +1262,15 @@ class Ui_MainWindow(object):
         self.background_overlay.setObjectName(u"background_overlay")
         self.background_overlay.setEnabled(False)
         self.background_overlay.setGeometry(QRect(0, 0, 1237, 795))
-        self.background_overlay.setFrameShape(QFrame.NoFrame)
-        self.background_overlay.setFrameShadow(QFrame.Plain)
+        self.background_overlay.setFrameShape(QFrame.Shape.NoFrame)
+        self.background_overlay.setFrameShadow(QFrame.Shadow.Plain)
         self.background_overlay.setLineWidth(0)
         self.blur_shield = QFrame(self.centralwidget)
         self.blur_shield.setObjectName(u"blur_shield")
         self.blur_shield.setEnabled(False)
         self.blur_shield.setGeometry(QRect(0, 0, 1237, 795))
-        self.blur_shield.setFrameShape(QFrame.NoFrame)
-        self.blur_shield.setFrameShadow(QFrame.Plain)
+        self.blur_shield.setFrameShape(QFrame.Shape.NoFrame)
+        self.blur_shield.setFrameShadow(QFrame.Shadow.Plain)
         self.blur_shield.setLineWidth(0)
         MainWindow.setCentralWidget(self.centralwidget)
         self.blur_shield.raise_()

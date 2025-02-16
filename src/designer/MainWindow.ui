@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1237</width>
-    <height>795</height>
+    <height>767</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -301,6 +301,10 @@ QToolTip {
 	background-color: white;
 	border-radius: 2px;
 	border-color: transparent;
+}
+
+QObject {
+	color: black
 }</string>
   </property>
   <property name="locale">
@@ -326,19 +330,19 @@ QToolTip {
      <string notr="true"/>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Shadow::Plain</enum>
     </property>
     <property name="lineWidth">
      <number>0</number>
     </property>
     <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
+     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
     </property>
     <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
+     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
     </property>
     <property name="sizeAdjustPolicy">
-     <enum>QAbstractScrollArea::AdjustToContents</enum>
+     <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
     </property>
     <property name="dragEnabled">
      <bool>false</bool>
@@ -409,7 +413,7 @@ QToolTip {
        <string notr="true">	background-color: rgba(255, 255, 255, 150);</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
      <widget class="QPushButton" name="delete_entry_button">
@@ -552,7 +556,7 @@ QToolTip {
        <string>ID:</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="label_2">
@@ -576,7 +580,7 @@ QToolTip {
        <string>creation time:</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="label_3">
@@ -600,7 +604,7 @@ QToolTip {
        <string>modification time:</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="id_label">
@@ -832,13 +836,13 @@ QAbstractItemView::corner {
 }</string>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
       </property>
       <property name="lineWrapMode">
-       <enum>QTextEdit::NoWrap</enum>
+       <enum>QTextEdit::LineWrapMode::NoWrap</enum>
       </property>
       <property name="html">
        <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1024,7 +1028,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <rect>
         <x>630</x>
         <y>17</y>
-        <width>51</width>
+        <width>88</width>
         <height>31</height>
        </rect>
       </property>
@@ -1038,7 +1042,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <string notr="true">	background-color: rgba(255, 255, 255, 150);</string>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::UpDownArrows</enum>
+       <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
       </property>
      </widget>
      <widget class="QPushButton" name="text_tab_background_color_button">
@@ -1282,9 +1286,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QSpinBox" name="paint_tab_eraser_settings_size_spinbox">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>250</x>
           <y>17</y>
-          <width>51</width>
+          <width>88</width>
           <height>31</height>
          </rect>
         </property>
@@ -1309,9 +1313,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QSpinBox" name="paint_tab_line_settings_size_spinbox">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>190</x>
           <y>17</y>
-          <width>51</width>
+          <width>71</width>
           <height>31</height>
          </rect>
         </property>
@@ -1362,7 +1366,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QCheckBox" name="paint_tab_line_settings_one_click_line_checkbutton">
         <property name="geometry">
          <rect>
-          <x>80</x>
+          <x>50</x>
           <y>17</y>
           <width>121</width>
           <height>31</height>
@@ -1414,9 +1418,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QSpinBox" name="paint_tab_shape_settings_outline_size_spinbox">
         <property name="geometry">
          <rect>
-          <x>150</x>
+          <x>120</x>
           <y>17</y>
-          <width>51</width>
+          <width>88</width>
           <height>31</height>
          </rect>
         </property>
@@ -1969,25 +1973,29 @@ QScrollBar {
 
 QAbstractItemView::corner {
 	background-color: transparent;
+}
+
+QGraphicsView {
+	background-color: white;
 }</string>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
       </property>
       <property name="renderHints">
-       <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+       <set>QPainter::RenderHint::Antialiasing|QPainter::RenderHint::TextAntialiasing</set>
       </property>
       <property name="dragMode">
-       <enum>QGraphicsView::NoDrag</enum>
+       <enum>QGraphicsView::DragMode::NoDrag</enum>
       </property>
       <property name="resizeAnchor">
-       <enum>QGraphicsView::NoAnchor</enum>
+       <enum>QGraphicsView::ViewportAnchor::NoAnchor</enum>
       </property>
      </widget>
      <widget class="QPushButton" name="paint_tab_undo_button">
@@ -2279,22 +2287,22 @@ QAbstractItemView::corner {
 }</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="lineWidth">
        <number>1</number>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOn</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOn</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
       </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
       </property>
       <widget class="QWidget" name="scrollAreaWidgetContents_2">
        <property name="geometry">
@@ -2351,10 +2359,10 @@ QAbstractItemView::corner {
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Shadow::Plain</enum>
     </property>
     <property name="lineWidth">
      <number>0</number>
@@ -2373,10 +2381,10 @@ QAbstractItemView::corner {
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Shadow::Plain</enum>
     </property>
     <property name="lineWidth">
      <number>0</number>

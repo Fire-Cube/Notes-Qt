@@ -43,9 +43,9 @@ class Ui_Dialog(object):
 "	border-color: rgb(198, 198, 198);\n"
 "}\n"
 "\n"
-"/* QDialog */\n"
-"QDialog {\n"
+"QObject {\n"
 "	background-color: white;\n"
+"	color: black;\n"
 "}")
         self.label = QLabel(Dialog)
         self.label.setObjectName(u"label")

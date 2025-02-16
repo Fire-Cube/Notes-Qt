@@ -31,35 +31,29 @@ QPushButton:hover {
 
 /* QComboBox */
 QComboBox {
-	background-color: white;
+    background-color: rgba(255, 255, 255, 150);
 	border: 1px solid gainsboro;
     border-radius: 3px;
 	selection-color: black;
 }
 
-QListView{
-	border: 1px solid rgb(198, 198, 198);
-    border-radius: 3px;
-}
-
-QComboBox:hover {
+QComboBox:focus, QComboBox:hover {
 	border-color: rgb(198, 198, 198);
 }
 
 QComboBox::drop-down {
+    border-radius: 3px;
 	background-color: transparent;
 }
 
 QComboBox::down-arrow {
-	image: url(:/theme/ComboBox.png);
+	image: url(:/ui/ComboBox.png);
 }
 
-QAbstractItemView::corner {
-	background-color: transparent;
-}
-
-QComboBox::drop-down {
-    border-color: transparent;
+QComboBox QAbstractItemView {
+	border: 1px solid gainsboro;
+    border-radius: 3px;
+	background-color: rgb(240, 240, 240);
 }
 
 /* QCheckBox */
@@ -89,6 +83,10 @@ QCheckBox::indicator:unchecked:pressed {
 QCheckBox {
 	background-color: rgba(255, 255, 255, 150);
 	padding: 5px;
+}
+
+QObject {
+	color: black
 }</string>
   </property>
   <widget class="QComboBox" name="language_combobox">
@@ -135,7 +133,7 @@ QCheckBox {
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="sizeConstraint">
-     <enum>QLayout::SetDefaultConstraint</enum>
+     <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
     </property>
     <property name="spacing">
      <number>10</number>

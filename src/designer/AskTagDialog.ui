@@ -34,9 +34,9 @@ QLineEdit:focus, QLineEdit:hover {
 	border-color: rgb(198, 198, 198);
 }
 
-/* QDialog */
-QDialog {
+QObject {
 	background-color: white;
+	color: black;
 }</string>
   </property>
   <widget class="QLabel" name="label">
