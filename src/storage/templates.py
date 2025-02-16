@@ -1,4 +1,4 @@
-from shared import get_actual_time
+from core.shared_functions import get_actual_time
 
 
 ENTRY_TEMPLATE = {

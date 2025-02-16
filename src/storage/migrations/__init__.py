@@ -2,7 +2,7 @@ from pathlib import Path
 
 from orjson import loads, dumps
 
-from special_logging import log, LOG_DATA_MIGRATIONS
+from core.special_logging import log, LOG_DATA_MIGRATIONS
 
 from storage.migrations import paint_add_z_order
 from storage.paths import PAINT_DATA_DIR_PATH

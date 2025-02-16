@@ -2393,7 +2393,7 @@ QAbstractItemView::corner {
   <customwidget>
    <class>FontComboBox</class>
    <extends>QFontComboBox</extends>
-   <header>custom_widgets</header>
+   <header>ui.custom_widgets</header>
   </customwidget>
  </customwidgets>
  <resources>

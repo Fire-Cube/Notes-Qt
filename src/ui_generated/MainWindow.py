@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.8.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QAbstractScrollArea, QAbstractSpinBox, QApplicati
     QScrollArea, QSizePolicy, QSpinBox, QStackedWidget,
     QTabWidget, QTextEdit, QTreeView, QWidget)
 
-from custom_widgets import FontComboBox
+from ui.custom_widgets import FontComboBox
 import ui_generated.main_window_resources
 
 class Ui_MainWindow(object):
@@ -31,7 +31,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(1237, 795)
         MainWindow.setMaximumSize(QSize(1237, 795))
         icon = QIcon()
-        icon.addFile(u":/icon/icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icon/icon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setAutoFillBackground(False)
         MainWindow.setStyleSheet(u"/* QComboBox */\n"
@@ -369,7 +369,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon1 = QIcon()
-        icon1.addFile(u":/ui/delete.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/ui/delete.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.delete_entry_button.setIcon(icon1)
         self.delete_entry_button.setIconSize(QSize(30, 30))
         self.insert_entry_button = QPushButton(self.general_tab)
@@ -387,7 +387,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon2 = QIcon()
-        icon2.addFile(u":/ui/new.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/ui/new.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.insert_entry_button.setIcon(icon2)
         self.insert_entry_button.setIconSize(QSize(30, 30))
         self.name_color_button = QPushButton(self.general_tab)
@@ -593,7 +593,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon3 = QIcon()
-        icon3.addFile(u":/ui/bold.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon3.addFile(u":/ui/bold.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.text_tab_bold_button.setIcon(icon3)
         self.text_tab_bold_button.setIconSize(QSize(30, 30))
         self.text_tab_italic_button = QPushButton(self.text_tab)
@@ -605,7 +605,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon4 = QIcon()
-        icon4.addFile(u":/ui/italic.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon4.addFile(u":/ui/italic.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.text_tab_italic_button.setIcon(icon4)
         self.text_tab_italic_button.setIconSize(QSize(30, 30))
         self.text_tab_underline_button = QPushButton(self.text_tab)
@@ -617,7 +617,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon5 = QIcon()
-        icon5.addFile(u":/ui/underline.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon5.addFile(u":/ui/underline.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.text_tab_underline_button.setIcon(icon5)
         self.text_tab_underline_button.setIconSize(QSize(30, 30))
         self.text_tab_overstrike_button = QPushButton(self.text_tab)
@@ -629,7 +629,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon6 = QIcon()
-        icon6.addFile(u":/ui/overstrike.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon6.addFile(u":/ui/overstrike.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.text_tab_overstrike_button.setIcon(icon6)
         self.text_tab_overstrike_button.setIconSize(QSize(30, 30))
         self.text_tab_foreground_color_button = QPushButton(self.text_tab)
@@ -689,7 +689,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon7 = QIcon()
-        icon7.addFile(u":/ui/selector.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon7.addFile(u":/ui/selector.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_enable_selector_button.setIcon(icon7)
         self.paint_tab_enable_selector_button.setIconSize(QSize(30, 30))
         self.paint_tab_enable_pen_button = QPushButton(self.paint_tab)
@@ -707,7 +707,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon8 = QIcon()
-        icon8.addFile(u":/ui/pen.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon8.addFile(u":/ui/pen.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_enable_pen_button.setIcon(icon8)
         self.paint_tab_enable_pen_button.setIconSize(QSize(30, 30))
         self.paint_tab_enable_eraser_button = QPushButton(self.paint_tab)
@@ -725,7 +725,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon9 = QIcon()
-        icon9.addFile(u":/ui/eraser.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon9.addFile(u":/ui/eraser.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_enable_eraser_button.setIcon(icon9)
         self.paint_tab_enable_eraser_button.setIconSize(QSize(30, 30))
         self.stackedWidget = QStackedWidget(self.paint_tab)
@@ -878,7 +878,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon10 = QIcon()
-        icon10.addFile(u":/ui/rectangle.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon10.addFile(u":/ui/rectangle.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_enable_rectangle_button.setIcon(icon10)
         self.paint_tab_enable_rectangle_button.setIconSize(QSize(30, 30))
         self.paint_tab_enable_ellipse_button = QPushButton(self.paint_tab)
@@ -896,7 +896,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon11 = QIcon()
-        icon11.addFile(u":/ui/ellipse.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon11.addFile(u":/ui/ellipse.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_enable_ellipse_button.setIcon(icon11)
         self.paint_tab_enable_ellipse_button.setIconSize(QSize(30, 30))
         self.paint_tab_enable_polygon_button = QPushButton(self.paint_tab)
@@ -914,7 +914,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon12 = QIcon()
-        icon12.addFile(u":/ui/polygon.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon12.addFile(u":/ui/polygon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_enable_polygon_button.setIcon(icon12)
         self.paint_tab_enable_polygon_button.setIconSize(QSize(30, 30))
         self.paint_tab_export_button = QPushButton(self.paint_tab)
@@ -932,7 +932,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon13 = QIcon()
-        icon13.addFile(u":/ui/export.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon13.addFile(u":/ui/export.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_export_button.setIcon(icon13)
         self.paint_tab_export_button.setIconSize(QSize(30, 30))
         self.paint_tab_enable_image_button = QPushButton(self.paint_tab)
@@ -950,7 +950,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon14 = QIcon()
-        icon14.addFile(u":/ui/image.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon14.addFile(u":/ui/image.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_enable_image_button.setIcon(icon14)
         self.paint_tab_enable_image_button.setIconSize(QSize(30, 30))
         self.paint_graphicsview = QGraphicsView(self.paint_tab)
@@ -1083,7 +1083,7 @@ class Ui_MainWindow(object):
 "					   }\n"
 "				   ")
         icon15 = QIcon()
-        icon15.addFile(u":/ui/undo.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon15.addFile(u":/ui/undo.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.paint_tab_undo_button.setIcon(icon15)
         self.paint_tab_undo_button.setIconSize(QSize(30, 30))
         self.MainTabManager.addTab(self.paint_tab, "")
@@ -1246,7 +1246,7 @@ class Ui_MainWindow(object):
         self.settings_button.setGeometry(QRect(1199, 8, 31, 31))
         self.settings_button.setStyleSheet(u"border-width:0px; border-radius: 12px; background-color: rgba(255, 255, 255, 200);")
         icon16 = QIcon()
-        icon16.addFile(u":/ui/settings.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon16.addFile(u":/ui/settings.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.settings_button.setIcon(icon16)
         self.settings_button.setIconSize(QSize(25, 25))
         self.background_overlay = QFrame(self.centralwidget)

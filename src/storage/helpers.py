@@ -7,7 +7,7 @@ from storage.paint import create_new_paint
 from storage.paths import DATA_DIR_PATH, ENTRIES_FILE_PATH, IMAGES_DIR_PATH, IMAGES_REGISTRY_FILE_PATH, SETTINGS_FILE_PATH
 from storage.templates import ENTRY_TEMPLATE, SETTINGS_TEMPLATE, PAINT_TEMPLATE
 
-from special_logging import log, LOG_INVALID_FILE, LOG_DATA_CHECKER_STATISTICS
+from core.special_logging import log, LOG_INVALID_FILE, LOG_DATA_CHECKER_STATISTICS
 
 
 def delete_data() -> None:

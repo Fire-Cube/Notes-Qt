@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'SettingsDialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.8.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -123,7 +123,7 @@ class Ui_Dialog(object):
         self.background1_button.setMaximumSize(QSize(162, 108))
         self.background1_button.setStyleSheet(u"")
         icon = QIcon()
-        icon.addFile(u":/backgrounds/1.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/backgrounds/1.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background1_button.setIcon(icon)
         self.background1_button.setIconSize(QSize(131, 100))
         self.background1_button.setFlat(True)
@@ -134,7 +134,7 @@ class Ui_Dialog(object):
         self.background5_button.setObjectName(u"background5_button")
         self.background5_button.setStyleSheet(u"")
         icon1 = QIcon()
-        icon1.addFile(u":/backgrounds/5.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/backgrounds/5.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background5_button.setIcon(icon1)
         self.background5_button.setIconSize(QSize(131, 100))
         self.background5_button.setFlat(True)
@@ -145,7 +145,7 @@ class Ui_Dialog(object):
         self.background2_button.setObjectName(u"background2_button")
         self.background2_button.setStyleSheet(u"")
         icon2 = QIcon()
-        icon2.addFile(u":/backgrounds/2.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/backgrounds/2.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background2_button.setIcon(icon2)
         self.background2_button.setIconSize(QSize(131, 100))
         self.background2_button.setFlat(True)
@@ -156,7 +156,7 @@ class Ui_Dialog(object):
         self.background3_button.setObjectName(u"background3_button")
         self.background3_button.setStyleSheet(u"")
         icon3 = QIcon()
-        icon3.addFile(u":/backgrounds/3.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon3.addFile(u":/backgrounds/3.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background3_button.setIcon(icon3)
         self.background3_button.setIconSize(QSize(131, 100))
         self.background3_button.setFlat(True)
@@ -167,7 +167,7 @@ class Ui_Dialog(object):
         self.background4_button.setObjectName(u"background4_button")
         self.background4_button.setStyleSheet(u"")
         icon4 = QIcon()
-        icon4.addFile(u":/backgrounds/4.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon4.addFile(u":/backgrounds/4.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background4_button.setIcon(icon4)
         self.background4_button.setIconSize(QSize(131, 100))
         self.background4_button.setFlat(True)
@@ -178,7 +178,7 @@ class Ui_Dialog(object):
         self.background6_button.setObjectName(u"background6_button")
         self.background6_button.setStyleSheet(u"")
         icon5 = QIcon()
-        icon5.addFile(u":/backgrounds/6.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon5.addFile(u":/backgrounds/6.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background6_button.setIcon(icon5)
         self.background6_button.setIconSize(QSize(131, 100))
         self.background6_button.setFlat(True)
@@ -189,7 +189,7 @@ class Ui_Dialog(object):
         self.background7_button.setObjectName(u"background7_button")
         self.background7_button.setStyleSheet(u"")
         icon6 = QIcon()
-        icon6.addFile(u":/backgrounds/7.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon6.addFile(u":/backgrounds/7.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background7_button.setIcon(icon6)
         self.background7_button.setIconSize(QSize(131, 100))
         self.background7_button.setFlat(True)
@@ -200,7 +200,7 @@ class Ui_Dialog(object):
         self.background8_button.setObjectName(u"background8_button")
         self.background8_button.setStyleSheet(u"")
         icon7 = QIcon()
-        icon7.addFile(u":/backgrounds/8.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon7.addFile(u":/backgrounds/8.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background8_button.setIcon(icon7)
         self.background8_button.setIconSize(QSize(131, 100))
         self.background8_button.setFlat(True)
@@ -211,7 +211,7 @@ class Ui_Dialog(object):
         self.background9_button.setObjectName(u"background9_button")
         self.background9_button.setStyleSheet(u"")
         icon8 = QIcon()
-        icon8.addFile(u":/backgrounds/9.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon8.addFile(u":/backgrounds/9.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.background9_button.setIcon(icon8)
         self.background9_button.setIconSize(QSize(131, 100))
         self.background9_button.setFlat(True)

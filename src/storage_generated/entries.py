@@ -3,12 +3,13 @@ This file is generated
 Do not edit this directly
 """
 
+import orjson
+
 from copy import deepcopy
 from typing import Generator
 
-import orjson
+from core.special_logging import LOG_ENTRY_CHANGES, log
 
-from special_logging import LOG_ENTRY_CHANGES, log
 from storage.paths import ENTRIES_FILE_PATH
 
 class InvalidIDError(BaseException):
