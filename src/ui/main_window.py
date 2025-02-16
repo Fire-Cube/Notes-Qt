@@ -36,6 +36,10 @@ from ui.custom_objects import StandardItem, StyledItemDelegate
 from ui.custom_widgets import CustomRubberBand
 from ui.dialogs import AskTagDialog, SettingsDialog
 
+from core.random_id import IDGenerator
+
+ID_GENERATOR = IDGenerator()
+
 class MainWindow(QMainWindow):
     def __init__(self, app: QApplication) -> None:
         super(MainWindow, self).__init__()

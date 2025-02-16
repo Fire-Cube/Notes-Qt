@@ -38,15 +38,12 @@ from tendo.singleton import SingleInstance, SingleInstanceException
 
 from constants import *
 
-from core.random_id import IDGenerator
 from core.special_logging import LOG_PROFILING, LOG_FATAL_ERROR, log
 
 from storage.helpers import delete_data, prepare_first_run, check_if_data_is_valid
 from storage.migrations import migrate
 
 from ui.main_window import MainWindow
-
-ID_GENERATOR = IDGenerator()
 
 
 def main() -> None:
