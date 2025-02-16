@@ -90,5 +90,8 @@ if __name__ == "__main__":
         log("Profiling finished.", LOG_PROFILING)
         pr.dump_stats("stats")
 
+        import pyprof2calltree
+        pyprof2calltree.convert("stats", "callgrind.out")
+
     else:
         main()
