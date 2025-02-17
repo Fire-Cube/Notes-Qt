@@ -45,6 +45,10 @@ You can also compile the application with Nuitka using the command:
 
     nuitka src/main.py
 
+Status
+------
+
+This project is in active development and is far from finished.
 
 Contributing
 ------------
